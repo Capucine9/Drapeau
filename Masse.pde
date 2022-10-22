@@ -71,7 +71,7 @@ class Ball {
     PVector air = new PVector (velocity.x * -D , velocity.y * -D);
     PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
     
-    delta_l = position.y - Yinit; //- l0;
+    delta_l = position.y - Yinit - l0;
     System.out.println("position.y "+ position.y);
     System.out.println("delta_l "+ delta_l);
     PVector stifness = new PVector (0, -k * delta_l);
@@ -80,14 +80,14 @@ class Ball {
     // sum of forces
     //PVector sum = air.copy();
     sum = new PVector (0,0);
-    sum.add(air);
-    System.out.println("sum.y + air "+ sum.y);
-    sum.add(wind);
-    System.out.println("sum.y + wind "+ sum.y);
+    //sum.add(air);
+    //System.out.println("sum.y + air "+ sum.y);
+    //sum.add(wind);
+    //System.out.println("sum.y + wind "+ sum.y);
     sum.add(stifness);
     System.out.println("sum.y + stifness "+ sum.y);
-    sum.add(damping);
-    System.out.println("sum.y + damping "+ sum.y);
+    //sum.add(damping);
+    //System.out.println("sum.y + damping "+ sum.y);
     
     // division by mass
     sum.div(m);
@@ -177,7 +177,7 @@ class Ball {
     
     // display the velocity of the ball
     stroke(204, 102, 0);
-    line(position.x, position.y, position.x+velocity.x*20, position.y+velocity.y*20);
+    line(position.x, position.y, position.x + velocity.x*20, position.y + velocity.y*20);
     
     // line representing a mass-spring system
     stroke(255);
