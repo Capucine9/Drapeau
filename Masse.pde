@@ -27,13 +27,13 @@ class Ball {
   final float D = 0.4;
   
   //stifness coefficient
-  float k=100;
+  float k=1;
   
   // spring length difference
   float delta_l;
   
   // damping coefficient
-  float c=100;
+  float c=0.5;
   
   // wind velocity
   PVector wind_velocity = new PVector(0, 0);
@@ -42,7 +42,7 @@ class Ball {
   PVector sum;
   
   // time step
-  final float delta_t = 0.001;
+  final float delta_t = 0.01;
 
 
   /**
@@ -120,10 +120,43 @@ class Ball {
   
   void update() {
     
+    // vecteur vertical
+    //float d_l = (position.y - Yinit) - l0;
+    //PVector stifness = new PVector (0, -k * d_l);
+    //PVector damping = new PVector (0 , -c * velocity.y);
+    //PVector somme = new PVector (0,0);
+    //somme.add(stifness);
+    //somme.add(damping);
+    //somme.div(m);
+    //somme.add(GRAVITY); 
+    //somme.mult(delta_t);
+    //velocity.add(somme);
+    ////velocity.mult(delta_t);
+    //position.add(velocity);
     
+    
+    //System.out.println("Acceleration "+somme.x+" "+somme.y);
+    //System.out.println("Vitesse "+velocity.x+" "+velocity.y);
+    //System.out.println("Position "+position.x+" "+position.y);
+    //System.out.println("-------------------------\n\n");
+    
+    // vecteur aleatoire
     float d_l = (position.y - Yinit) - l0;
-    PVector stifness = new PVector (0, -k * d_l);
-    PVector damping = new PVector (0 , -c * velocity.y);
+    
+    
+    float x1 = position.x;
+    float y1 = position.y;
+    float x2 = Xinit;
+    float y2 = Yinit;
+    // distance (pour normalisation) : dist(x1, y1, x2, y2)
+    float distance = dist(x1, y1, x2, y2);
+    //norme en x
+    float Nx = (x1 - x2)/distance;
+    //norme en y
+    float Ny = (y1 - y2)/distance;
+    
+    PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
+    PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
     PVector somme = new PVector (0,0);
     somme.add(stifness);
     somme.add(damping);
@@ -133,12 +166,6 @@ class Ball {
     velocity.add(somme);
     //velocity.mult(delta_t);
     position.add(velocity);
-    
-    
-    //System.out.println("Acceleration "+somme.x+" "+somme.y);
-    //System.out.println("Vitesse "+velocity.x+" "+velocity.y);
-    //System.out.println("Position "+position.x+" "+position.y);
-    //System.out.println("-------------------------\n\n");
     
   }
 

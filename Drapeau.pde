@@ -105,7 +105,7 @@ void draw() {
 void newBall() {
   
     // init the ball with size and random position, according to the selected limits
-  ball = new Ball(Xinit, Yinit+l0-50, taille, masse, l0);
+  ball = new Ball(Xinit -10, Yinit+l0, taille, masse, l0);
   //t = 0.0;
   
 }
