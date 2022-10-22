@@ -27,13 +27,13 @@ class Ball {
   final float D = 0.4;
   
   //stifness coefficient
-  float k=10;
+  float k=100;
   
   // spring length difference
   float delta_l;
   
   // damping coefficient
-  float c=1;
+  float c=10;
   
   // wind velocity
   PVector wind_velocity = new PVector(0, 0);
@@ -42,7 +42,7 @@ class Ball {
   PVector sum;
   
   // time step
-  final float delta_t = 0.05;
+  final float delta_t = 0.001;
 
 
   /**
@@ -56,7 +56,7 @@ class Ball {
     //velocity0 = new PVector(0, 0);
     radius = diametre / 2;
     //velocity = new PVector(velocity0.x, velocity0.y);
-    velocity = new PVector(velocity.x, velocity.y);
+    //velocity = new PVector(velocity.x, velocity.y);
     m = masse;
     l0 = longueur_a_vide;
     
@@ -66,7 +66,7 @@ class Ball {
   /**
    * Update the attribute of the ball, its position thanks to the calculation of the velocity and acceleration at time t.
   **/ 
-  void update() {
+  void updateOld() {
     // calculate forces
     PVector air = new PVector (velocity.x * -D , velocity.y * -D);
     PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
@@ -116,6 +116,30 @@ class Ball {
     //position.add(velocity);
     
     //t += 0.005;
+  }
+  
+  void update() {
+    //somme F = m*a
+    //-k*position - c * v() = m*a
+    float d_l = position.y - (Yinit + l0);
+    PVector stifness = new PVector (0, -k * d_l);
+    PVector damping = new PVector (0 , -c * velocity.y);
+    PVector somme = new PVector (0,0);
+    somme.add(stifness);
+    somme.add(damping);
+    somme.add(GRAVITY); 
+    somme.mult(delta_t);
+    velocity.add(somme);
+    //velocity.mult(delta_t);
+    position.add(velocity);
+    
+    System.out.println("Acceleration "+somme.x+" "+somme.y);
+    System.out.println("Vitesse "+velocity.x+" "+velocity.y);
+    System.out.println("Position "+position.x+" "+position.y);
+    System.out.println("-------------------------\n\n");
+    
+    //PVector damping = new PVector (0 , -c * velocity.y);
+    
   }
 
 

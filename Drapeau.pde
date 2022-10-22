@@ -31,7 +31,7 @@ float taille = 20;
 float masse = 1;
 
 // empty length spring
-int l0 = 20;
+int l0 = 100;
 
 // tick/time elapse
 //float t = 0.0;
@@ -95,10 +95,6 @@ void draw() {
   ball.update();
   ball.display();
   //ball.checkBoundaryCollision();
-  
-  
-  // update the tick count
-  //t += 0.001;  
 }
 
 
@@ -109,7 +105,7 @@ void draw() {
 void newBall() {
   
     // init the ball with size and random position, according to the selected limits
-  ball = new Ball(Xinit, Yinit+l0, taille, masse, l0);
+  ball = new Ball(Xinit, Yinit+l0-50, taille, masse, l0);
   //t = 0.0;
   
 }
