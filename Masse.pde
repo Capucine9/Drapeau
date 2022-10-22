@@ -33,7 +33,7 @@ class Ball {
   float delta_l;
   
   // damping coefficient
-  float c=10;
+  float c=100;
   
   // wind velocity
   PVector wind_velocity = new PVector(0, 0);
@@ -119,26 +119,26 @@ class Ball {
   }
   
   void update() {
-    //somme F = m*a
-    //-k*position - c * v() = m*a
-    float d_l = position.y - (Yinit + l0);
+    
+    
+    float d_l = (position.y - Yinit) - l0;
     PVector stifness = new PVector (0, -k * d_l);
     PVector damping = new PVector (0 , -c * velocity.y);
     PVector somme = new PVector (0,0);
     somme.add(stifness);
     somme.add(damping);
+    somme.div(m);
     somme.add(GRAVITY); 
     somme.mult(delta_t);
     velocity.add(somme);
     //velocity.mult(delta_t);
     position.add(velocity);
     
-    System.out.println("Acceleration "+somme.x+" "+somme.y);
-    System.out.println("Vitesse "+velocity.x+" "+velocity.y);
-    System.out.println("Position "+position.x+" "+position.y);
-    System.out.println("-------------------------\n\n");
     
-    //PVector damping = new PVector (0 , -c * velocity.y);
+    //System.out.println("Acceleration "+somme.x+" "+somme.y);
+    //System.out.println("Vitesse "+velocity.x+" "+velocity.y);
+    //System.out.println("Position "+position.x+" "+position.y);
+    //System.out.println("-------------------------\n\n");
     
   }
 
