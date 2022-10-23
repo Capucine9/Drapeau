@@ -17,17 +17,17 @@ int dimX = 1000;
 int dimY = 800;
  
  
-// the ball of the project
-Ball ball;
+// the mass of the project
+Mass mass;
 
-// coordinates of the first ball
+// coordinates of the first mass
 int Xinit = 200;
 int Yinit = 200;
 
-// size of the ball
+// size of the mass
 float taille = 20;
 
-// mass of the selected ball
+// mass of the selected mass
 float masse = 1;
 
 // empty length spring
@@ -48,7 +48,7 @@ void settings () {
 
 
 void setup() {
-  this.newBall();
+  this.newMass();
 }
 
 
@@ -91,21 +91,21 @@ void draw() {
     }
   }
   
-  // update position of the ball and display it
-  ball.update();
-  ball.display();
-  //ball.checkBoundaryCollision();
+  // update position of the mass and display it
+  mass.update();
+  mass.display();
+  //mass.checkBoundaryCollision();
 }
 
 
 
 /**
- * Create a new ball and init its trajectory
+ * Create a new mass and init its trajectory
  **/
-void newBall() {
+void newMass() {
   
-    // init the ball with size and random position, according to the selected limits
-  ball = new Ball(Xinit -10, Yinit+l0, taille, masse, l0);
+    // init the mass with size and random position, according to the selected limits
+  mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
   //t = 0.0;
   
 }

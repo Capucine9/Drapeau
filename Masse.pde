@@ -1,30 +1,30 @@
 /**
- * Class which represent a ball that bounces
+ * Class which represent a flag 
  **/
-class Ball {
+class Mass {
   
   
-  // the position of the ball in the world
+  // the position of the mass in the world
   PVector position;
   
-  // the initial velocity of the ball
+  // the initial velocity of the mass
   //PVector velocity0;
   
-  // the velocity of the ball at the time t;
+  // the velocity of the mass at the time t;
   PVector velocity = new PVector (0, 0);
   
-  // the acceleration of the ball at the time t;
+  // the acceleration of the mass at the time t;
   PVector acceleration;
 
-  // the radius of the ball
+  // the radius of the mass
   float radius;
   
-  // the mass of the ball
+  // the mass of the mass
   float m;
   
   ////////////////////////////////////// CONSTANT
   // air resistance constant
-  final float D = 0.4;
+  final float D = 0;
   
   //stifness coefficient
   float k=1;
@@ -48,7 +48,7 @@ class Ball {
   /**
    * Constructor of the object
    **/
-  Ball(float x, float y, float diametre, float masse, int longueur_a_vide) {
+  Mass(float x, float y, float diametre, float masse, int longueur_a_vide) {
     float Xinit = x;
     float Yinit = y;
     position = new PVector(x, y);
@@ -64,59 +64,49 @@ class Ball {
 
 
   /**
-   * Update the attribute of the ball, its position thanks to the calculation of the velocity and acceleration at time t.
+   * Update the attribute of the mass, its position thanks to the calculation of the velocity and acceleration at time t.
   **/ 
-  void updateOld() {
-    // calculate forces
-    PVector air = new PVector (velocity.x * -D , velocity.y * -D);
-    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
+  //void updateOld() {
+  //  // calculate forces
+  //  PVector air = new PVector (velocity.x * -D , velocity.y * -D);
+  //  PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
     
-    delta_l = position.y - Yinit - l0;
-    System.out.println("position.y "+ position.y);
-    System.out.println("delta_l "+ delta_l);
-    PVector stifness = new PVector (0, -k * delta_l);
-    PVector damping = new PVector (0 , -c * velocity.y);
+  //  delta_l = position.y - Yinit - l0;
+  //  PVector stifness = new PVector (0, -k * delta_l);
+  //  PVector damping = new PVector (0 , -c * velocity.y);
     
-    // sum of forces
-    //PVector sum = air.copy();
-    sum = new PVector (0,0);
-    //sum.add(air);
-    //System.out.println("sum.y + air "+ sum.y);
-    //sum.add(wind);
-    //System.out.println("sum.y + wind "+ sum.y);
-    sum.add(stifness);
-    System.out.println("sum.y + stifness "+ sum.y);
-    //sum.add(damping);
-    //System.out.println("sum.y + damping "+ sum.y);
+  //  // sum of forces
+  //  //PVector sum = air.copy();
+  //  sum = new PVector (0,0);
+  //  //sum.add(air);
+  //  //sum.add(wind);
+  //  sum.add(stifness);
+  //  //sum.add(damping);
     
-    // division by mass
-    sum.div(m);
-    System.out.println("sum.y/m "+ sum.y);
+  //  // division by mass
+  //  sum.div(m);
     
+  //  // calculate the acceleration at the time t
+  //  //PVector tmp = new PVector(sum.x * (1 / m), sum.y * (-D / m));
+  //  acceleration = sum.add(GRAVITY); 
     
-    // calculate the acceleration at the time t
-    //PVector tmp = new PVector(sum.x * (1 / m), sum.y * (-D / m));
-    acceleration = sum.add(GRAVITY); 
-    System.out.println("acceleration.y : " + acceleration.y);
+  //  // calculate the velocity at the time t + delta t
+  //  //PVector tmp1 = acceleration.mult(delta_t);
+  //  //velocity.add(tmp1);
+  //  acceleration.mult(delta_t);
+  //  velocity.add(acceleration);
     
-    // calculate the velocity at the time t + delta t
-    //PVector tmp1 = acceleration.mult(delta_t);
-    //velocity.add(tmp1);
-    acceleration.mult(delta_t);
-    velocity.add(acceleration);
-    System.out.println("velocity.y : " + velocity.y);
-    
-    // calculate the position at the time t + delta t
-    PVector tmp2 = velocity.mult(delta_t);
-    position.add(tmp2);
-    System.out.println("position.y "+ position.y);
-    System.out.println("-------------------------");
+  //  // calculate the position at the time t + delta t
+  //  PVector tmp2 = velocity.mult(delta_t);
+  //  position.add(tmp2);
+  //  System.out.println("position.y "+ position.y);
+  //  System.out.println("-------------------------");
 
     
-    //position.add(velocity);
+  //  //position.add(velocity);
     
-    //t += 0.005;
-  }
+  //  //t += 0.005;
+  //}
   
   void update() {
     
@@ -135,15 +125,40 @@ class Ball {
     //position.add(velocity);
     
     
-    //System.out.println("Acceleration "+somme.x+" "+somme.y);
-    //System.out.println("Vitesse "+velocity.x+" "+velocity.y);
-    //System.out.println("Position "+position.x+" "+position.y);
-    //System.out.println("-------------------------\n\n");
     
-    // vecteur aleatoire
+    //// vecteur aleatoire
+    //float d_l = (position.y - Yinit) - l0;
+    //float x1 = position.x;
+    //float y1 = position.y;
+    //float x2 = Xinit;
+    //float y2 = Yinit;
+    //// distance (pour normalisation) : dist(x1, y1, x2, y2)
+    //float distance = dist(x1, y1, x2, y2);
+    ////norme en x
+    //float Nx = (x1 - x2)/distance;
+    ////norme en y
+    //float Ny = (y1 - y2)/distance;
+    
+    //PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
+    //PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+    //PVector somme = new PVector (0,0);
+    //somme.add(stifness);
+    //somme.add(damping);
+    //somme.div(m);
+    //somme.add(GRAVITY); 
+    //somme.mult(delta_t);
+    //velocity.add(somme);
+    //position.add(velocity);
+    
+    
+   
+    
+    // vecteur aleatoire + ajout frottement
+    // calculate forces
+    PVector air = new PVector (velocity.x * -D , velocity.y * -D);
+    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
+    
     float d_l = (position.y - Yinit) - l0;
-    
-    
     float x1 = position.x;
     float y1 = position.y;
     float x2 = Xinit;
@@ -157,14 +172,20 @@ class Ball {
     
     PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
     PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
-    PVector somme = new PVector (0,0);
+    
+    //sum of forces
+    PVector somme = air.copy();
+    somme.add(air);
+    somme.add(wind);
+  
+  
+    //PVector somme = new PVector (0,0);
     somme.add(stifness);
     somme.add(damping);
     somme.div(m);
     somme.add(GRAVITY); 
     somme.mult(delta_t);
     velocity.add(somme);
-    //velocity.mult(delta_t);
     position.add(velocity);
     
   }
@@ -172,7 +193,7 @@ class Ball {
 
   
   /**
-   * Check if the ball hurt a wall or not, and recalculate its velocity
+   * Check if the mass hurt a wall or not, and recalculate its velocity
    **/
   /*void checkBoundaryCollision() {
     // RIGHT
@@ -218,7 +239,7 @@ class Ball {
 
  
   /**
-   * Display the ball and his velocity vector
+   * Display the mass and his velocity vector
    **/
   void display() {
     noStroke();
@@ -226,7 +247,7 @@ class Ball {
     ellipse(position.x, position.y, radius*2, radius*2);
   
     
-    // display the velocity of the ball
+    // display the velocity of the mass
     stroke(204, 102, 0);
     line(position.x, position.y, position.x + velocity.x*20, position.y + velocity.y*20);
     
