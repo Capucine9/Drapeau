@@ -15,10 +15,12 @@ int marqueur = 71;
 int dimX = 1000;
 // height of the windows 
 int dimY = 800;
- 
+
+// number of mass
+int nbMass = 2;
  
 // the mass of the project
-Mass mass;
+Mass[] mass = new Mass[nbMass];
 
 // coordinates of the first mass
 int Xinit = 200;
@@ -31,7 +33,7 @@ float taille = 20;
 float masse = 1;
 
 // empty length spring
-int l0 = 100;
+int l0 = 50;
 
 // tick/time elapse
 //float t = 0.0;
@@ -92,9 +94,23 @@ void draw() {
   }
   
   // update position of the mass and display it
-  mass.update();
-  mass.display();
+  //mass.update();
+  //mass.display();
   //mass.checkBoundaryCollision();
+  
+  
+  //////////////////////////////////
+  for (Mass m : mass) {
+    m.update();
+    m.display();
+    
+    // line representing a mass-spring system
+    stroke(255);
+    line(Xinit, Yinit, mass[0].position.x, mass[0].position.y);
+    for (int i=0; i < nbMass-1; i++){
+      line(mass[i].position.x, mass[i].position.y, mass[i+1].position.x, mass[i+1].position.y);
+    }
+  }
 }
 
 
@@ -104,9 +120,14 @@ void draw() {
  **/
 void newMass() {
   
-    // init the mass with size and random position, according to the selected limits
-  mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
+  // init the mass with size and random position, according to the selected limits
+  //mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
   //t = 0.0;
+  
+  ////////////////////////////////////
+  for (int i=0; i < nbMass; i++){
+    mass[i] = new Mass(Xinit, Yinit + (l0 * (i+1)), taille, masse, l0);
+  }
   
 }
 

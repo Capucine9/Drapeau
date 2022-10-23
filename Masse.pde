@@ -36,7 +36,7 @@ class Mass {
   float c=0.5;
   
   // wind velocity
-  PVector wind_velocity = new PVector(0, 0);
+  PVector wind_velocity = new PVector(2, 0);
   
   // sum of forces
   PVector sum;
@@ -250,10 +250,6 @@ class Mass {
     // display the velocity of the mass
     stroke(204, 102, 0);
     line(position.x, position.y, position.x + velocity.x*20, position.y + velocity.y*20);
-    
-    // line representing a mass-spring system
-    stroke(255);
-    line(Xinit, Yinit, position.x, position.y);
     
   }
 }
