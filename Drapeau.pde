@@ -7,6 +7,9 @@ String tx5 = "- 5x5";
 String tx10 = "- 10x10";
 String tx15 = "- 15x15";
 
+int dimGridX = 1;
+int dimGridY = 10;
+
 // selected number of discretisation points
 int marqueur = 71;
  
@@ -20,7 +23,7 @@ int dimY = 800;
 int nbMass = 2;
  
 // the mass of the project
-Mass[] mass = new Mass[nbMass];
+Mass[][] mass;
 
 // coordinates of the first mass
 int Xinit = 200;
@@ -50,7 +53,8 @@ void settings () {
 
 
 void setup() {
-  this.newMass();
+  //this.newMass();
+  this.initGrid();
 }
 
 
@@ -100,35 +104,49 @@ void draw() {
   
   
   //////////////////////////////////
-  for (Mass m : mass) {
-    m.update();
-    m.display();
-    
-    // line representing a mass-spring system
-    stroke(255);
-    line(Xinit, Yinit, mass[0].position.x, mass[0].position.y);
-    for (int i=0; i < nbMass-1; i++){
-      line(mass[i].position.x, mass[i].position.y, mass[i+1].position.x, mass[i+1].position.y);
+  for ( int j = 0; j < dimGridX ; j++ ) {
+    for (Mass m : mass[j]) {
+      m.update();
+      m.display();
+      
+      // line representing a mass-spring system
+      stroke(255);
+      line(Xinit, Yinit, mass[0][0].position.x, mass[0][0].position.y);
+      for (int i=0; i < nbMass-1; i++){
+        line(mass[0][i].position.x, mass[0][i].position.y, mass[0][i+1].position.x, mass[0][i+1].position.y);
+      }
     }
   }
 }
 
 
 
-/**
- * Create a new mass and init its trajectory
- **/
-void newMass() {
+///**
+// * Create a new mass and init its trajectory
+// **/
+//void newMass() {
   
-  // init the mass with size and random position, according to the selected limits
-  //mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
-  //t = 0.0;
+//  // init the mass with size and random position, according to the selected limits
+//  //mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
+//  //t = 0.0;
   
-  ////////////////////////////////////
-  for (int i=0; i < nbMass; i++){
-    mass[i] = new Mass(Xinit, Yinit + (l0 * (i+1)), taille, masse, l0);
+//  ////////////////////////////////////
+//  for (int i=0; i < nbMass; i++){
+//    //mass[i] = new Mass(Xinit, Yinit + (l0 * (i+1)), taille, masse, l0);
+//  }
+  
+//}
+
+
+void initGrid () {
+  mass = new Mass[dimGridX][dimGridY];
+  for ( int i = 0; i < dimGridX; i++) {
+    for ( int j = 0; j < dimGridY; j++ ) {
+      int x = Xinit + (l0 * j);
+      int y = Yinit + (l0 * i);
+      mass[i][j] = new Mass(i, j, x, y, taille, masse, l0);
+    }
   }
-  
 }
 
 
@@ -144,14 +162,23 @@ void mousePressed() {
       // 5x5
       if (mouseY >= 30 && mouseY <= 50){
         marqueur = 52;
+        this.dimGridX = 5;
+        this.dimGridY = 5;
+        this.initGrid();
       }
       // 10x10
       if (mouseY >= 50 && mouseY <= 70){
         marqueur = 72;
+        this.dimGridX = 10;
+        this.dimGridY = 10;
+        this.initGrid();
       }
       // 15x15
       if (mouseY >= 70 && mouseY <= 90){
         marqueur = 92;
+        this.dimGridX = 15;
+        this.dimGridY = 15;
+        this.initGrid();
       }
     }
   }

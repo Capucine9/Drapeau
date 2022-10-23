@@ -3,6 +3,8 @@
  **/
 class Mass {
   
+  int i = -1;
+  int j = -1;
   
   // the position of the mass in the world
   PVector position;
@@ -42,13 +44,15 @@ class Mass {
   PVector sum;
   
   // time step
-  final float delta_t = 0.01;
+  final float delta_t = 0.0;
 
 
   /**
    * Constructor of the object
    **/
-  Mass(float x, float y, float diametre, float masse, int longueur_a_vide) {
+  Mass(int i, int j, float x, float y, float diametre, float masse, int longueur_a_vide) {
+    this.i = i;
+    this.j = j;
     float Xinit = x;
     float Yinit = y;
     position = new PVector(x, y);
