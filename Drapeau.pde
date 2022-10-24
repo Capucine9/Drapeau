@@ -7,7 +7,7 @@ String tx5 = "- 5x5";
 String tx10 = "- 10x10";
 String tx15 = "- 15x15";
 
-int dimGridX = 1;
+int dimGridX = 10;
 int dimGridY = 10;
 
 // selected number of discretisation points
@@ -102,21 +102,27 @@ void draw() {
   //mass.display();
   //mass.checkBoundaryCollision();
   
-  
-  //////////////////////////////////
-  for ( int j = 0; j < dimGridX ; j++ ) {
-    for (Mass m : mass[j]) {
-      m.update();
-      m.display();
-      
-      // line representing a mass-spring system
-      stroke(255);
-      line(Xinit, Yinit, mass[0][0].position.x, mass[0][0].position.y);
-      for (int i=0; i < nbMass-1; i++){
-        line(mass[0][i].position.x, mass[0][i].position.y, mass[0][i+1].position.x, mass[0][i+1].position.y);
-      }
+  for ( int y = dimGridY-1; y >= 0; y--) {
+    for ( int x = dimGridX-1; x >= 0; x-- ) {
+      mass[x][y].update();
+      mass[x][y].display();
     }
   }
+    
+  //////////////////////////////////
+  //for ( int j = 0; j < dimGridX ; j++ ) {
+  //  for (Mass m : mass[j]) {
+  //    m.update();
+  //    m.display();
+      
+  //    // line representing a mass-spring system
+  //    stroke(255);
+  //    line(Xinit, Yinit, mass[0][0].position.x, mass[0][0].position.y);
+  //    for (int i=0; i < nbMass-1; i++){
+  //      //line(mass[0][i].position.x, mass[0][i].position.y, mass[0][i+1].position.x, mass[0][i+1].position.y);
+  //    }
+  //  }
+  //}
 }
 
 
@@ -144,9 +150,11 @@ void initGrid () {
     for ( int j = 0; j < dimGridY; j++ ) {
       int x = Xinit + (l0 * j);
       int y = Yinit + (l0 * i);
-      mass[i][j] = new Mass(i, j, x, y, taille, masse, l0);
+      mass[i][j] = new Mass(i, j, x, y, taille, masse, l0, true);
     }
   }
+  mass[0][0].canMove = false;
+  mass[dimGridX-1][0].canMove = false;
 }
 
 

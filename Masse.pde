@@ -17,6 +17,9 @@ class Mass {
   
   // the acceleration of the mass at the time t;
   PVector acceleration;
+  
+  //
+  PVector forceExterieure = new PVector(0,0);
 
   // the radius of the mass
   float radius;
@@ -24,33 +27,33 @@ class Mass {
   // the mass of the mass
   float m;
   
+  //
+  boolean canMove = true;
+  
   ////////////////////////////////////// CONSTANT
   // air resistance constant
-  final float D = 0;
+  final float D = 0.4;
   
   //stifness coefficient
-  float k=1;
+  float k=100;
   
   // spring length difference
   float delta_l;
   
   // damping coefficient
-  float c=0.5;
+  float c=3;
   
   // wind velocity
-  PVector wind_velocity = new PVector(2, 0);
-  
-  // sum of forces
-  PVector sum;
+  PVector wind_velocity = new PVector(100, 0);
   
   // time step
-  final float delta_t = 0.0;
+  final float delta_t = 0.001;
 
 
   /**
    * Constructor of the object
    **/
-  Mass(int i, int j, float x, float y, float diametre, float masse, int longueur_a_vide) {
+  Mass(int i, int j, float x, float y, float diametre, float masse, int longueur_a_vide, boolean _canMove) {
     this.i = i;
     this.j = j;
     float Xinit = x;
@@ -63,7 +66,7 @@ class Mass {
     //velocity = new PVector(velocity.x, velocity.y);
     m = masse;
     l0 = longueur_a_vide;
-    
+    this.canMove = _canMove;
   }
 
 
@@ -155,91 +158,90 @@ class Mass {
     //position.add(velocity);
     
     
-   
+    //// vecteur aleatoire + ajout frottement
+    //// calculate forces
+    //PVector air = new PVector (velocity.x * -D , velocity.y * -D);
+    //PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
     
-    // vecteur aleatoire + ajout frottement
-    // calculate forces
-    PVector air = new PVector (velocity.x * -D , velocity.y * -D);
-    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
+    //float d_l = (position.y - Yinit) - l0;
+    //float x1 = position.x;
+    //float y1 = position.y;
+    //float x2 = Xinit;
+    //float y2 = Yinit;
+    //// distance (pour normalisation) : dist(x1, y1, x2, y2)
+    //float distance = dist(x1, y1, x2, y2);
+    ////norme en x
+    //float Nx = (x1 - x2)/distance;
+    ////norme en y
+    //float Ny = (y1 - y2)/distance;
     
-    float d_l = (position.y - Yinit) - l0;
-    float x1 = position.x;
-    float y1 = position.y;
-    float x2 = Xinit;
-    float y2 = Yinit;
-    // distance (pour normalisation) : dist(x1, y1, x2, y2)
-    float distance = dist(x1, y1, x2, y2);
-    //norme en x
-    float Nx = (x1 - x2)/distance;
-    //norme en y
-    float Ny = (y1 - y2)/distance;
-    
-    PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
-    PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+    //PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
+    //PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+
+    PVector forceLeft =       calculRessortForce(i, j-1);
+    PVector forceUp =         calculRessortForce(i-1, j);
+    //PVector forceDiagLeft =   calculRessortForce(i-1, j-1);
+    //PVector forceDiagRight =  calculRessortForce(i-1, j+1);
     
     //sum of forces
+    PVector air = new PVector (velocity.x * -D , velocity.y * -D);
+    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
     PVector somme = air.copy();
     somme.add(air);
     somme.add(wind);
   
   
     //PVector somme = new PVector (0,0);
-    somme.add(stifness);
-    somme.add(damping);
+    somme.add(forceLeft);
+    somme.add(forceUp);
+    //somme.add(forceDiagLeft);
+    //somme.add(forceDiagRight);
+    somme.add(forceExterieure);
+    forceExterieure = new PVector(0,0);
     somme.div(m);
     somme.add(GRAVITY); 
     somme.mult(delta_t);
-    velocity.add(somme);
-    position.add(velocity);
+    if ( this.canMove ) {
+      velocity.add(somme);
+      position.add(velocity);
+    }
     
   }
 
 
-  
   /**
-   * Check if the mass hurt a wall or not, and recalculate its velocity
-   **/
-  /*void checkBoundaryCollision() {
-    // RIGHT
-    if (position.x > width-radius) {
-      position.x = width-radius;
-      // modification of transversale velocity (friction)
-      velocity.y *= -1;
-      // modification of normale velocity (bouncy)
-      velocity.x *= -1;
-      velocity0.x *= -1;
-    }
+   *
+   */
+  PVector calculRessortForce(int indexRowSpringAnchor, int indexColumnSpringAnchor) {
+    if ( indexRowSpringAnchor < 0 || indexRowSpringAnchor >= dimGridX || indexColumnSpringAnchor < 0 || indexColumnSpringAnchor >= dimGridY )
+      return new PVector(0,0);
     
-    // LEFT
-    if (position.x < radius) {
-      position.x = radius;
-      velocity.y *= -1;
-      velocity.x *= -1;
-      velocity0.x *= -1;
-    }
+    float xMasse = position.x;
+    float yMasse = position.y;
+    float xAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.x;
+    float yAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.y;
     
-    // BOTTOM
-    if (position.y > height-radius) {
-      position.y = height-radius;
-      velocity.x *= -1;
-      velocity.y *= -1;
-      velocity0 = velocity;
-      
-      // new trajectoty so initialize time
-      t = 0.1;
-    }
+    float d_l_v = ((xMasse - xAnchorSpring)) * ((xMasse - xAnchorSpring));
+    float d_l_h = ((yMasse - yAnchorSpring)) * ((yMasse - yAnchorSpring));
+    float d_l = sqrt(d_l_v + d_l_h) - l0;
     
-    // TOP
-    if (position.y < radius) {
-      position.y = radius;
-      velocity.x *= -1;
-      velocity.y *= -1;
-      velocity0 = velocity;
-      
-      // new trajectoty so initialize time
-      t = 0.1;
-    }
-  }*/
+    // distance (pour normalisation) : dist(x1, y1, x2, y2)
+    float distance = dist(xMasse, yMasse, xAnchorSpring, yAnchorSpring);
+    //norme en x
+    float Nx = (xMasse - xAnchorSpring)/distance;
+    //norme en y
+    float Ny = (yMasse - yAnchorSpring)/distance;
+    
+    PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
+    PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+    
+    stroke(255);
+    line(xMasse, yMasse, xAnchorSpring, yAnchorSpring);
+    
+    PVector force = stifness.add(damping);
+    mass[indexRowSpringAnchor][indexColumnSpringAnchor].forceExterieure.add(force.mult(-1));
+    return force.mult(-1);
+  }
 
  
   /**
