@@ -7,8 +7,8 @@ PImage img;
  
 // button text
 String tx5 = "- 5x5"; 
-String tx10 = "- 10x10";
-String tx15 = "- 15x15";
+String tx8 = "- 8x12";
+String tx12 = "- 12x18";
 String txAvec = "Avec";
 String txSans = "Sans";
 
@@ -19,9 +19,13 @@ int dimGridY = 12;
 int marqueur_nb_points = 71;
 // selected diagonal spring
 int marqueur_diag = 780;
+// selected texture
+int marqueur_texture = 780;
 
 // with diagonal spring
 boolean diagonal_spring = true;
+// with texture
+boolean texture = true;
  
 // width of the windows
 int dimX = 1000;
@@ -81,8 +85,8 @@ void draw() {
   text("Nombre de points de la discrétisation :", 15, 25); 
   textSize(20);
   text(tx5, 15, 50);
-  text(tx10, 15, 70);
-  text(tx15, 15, 90);
+  text(tx8, 15, 70);
+  text(tx12, 15, 90);
   
   // marker
   fill(255, 0, 0);
@@ -95,15 +99,15 @@ void draw() {
       fill(255,0,0);
       text(tx5, 15, 50);
     }
-    // 10x10
+    // 8x12
     if (mouseY >= 50 && mouseY <= 70){
       fill(255,0,0);
-      text(tx10, 15, 70);
+      text(tx8, 15, 70);
     }
-    // 15x15
+    // 12x18
     if (mouseY >= 70 && mouseY <= 90){
       fill(255,0,0);
-      text(tx15, 15, 90);
+      text(tx12, 15, 90);
     }
   }
   
@@ -121,15 +125,42 @@ void draw() {
   
   // change the colour of the next selected value
   if (mouseY >= 15 && mouseY <= 30){
-    // 5x5
+    // with diagonal spring
     if (mouseX >= 795 && mouseX <= 845){
       fill(255,0,0);
       text(txAvec, 800, 25);
     }
-    // 10x10
+    // without diagonal spring
     if (mouseX >= 865 && mouseX <= 915){
       fill(255,0,0);
       text(txSans, 870, 25);
+    }
+  }
+  
+  
+  // change the texture
+  fill(255);
+  textSize(25);
+  text("Texture :", 550, 50); 
+  textSize(20);
+  text(txAvec, 800, 50);
+  text(txSans, 870, 50);
+  
+  // marker
+  fill(255, 0, 0);
+  text(" > ", marqueur_texture, 50);
+  
+  // change the colour of the next selected value
+  if (mouseY >= 40 && mouseY <= 53){
+    // with texture
+    if (mouseX >= 795 && mouseX <= 845){
+      fill(255,0,0);
+      text(txAvec, 800, 50);
+    }
+    // without texture
+    if (mouseX >= 865 && mouseX <= 915){
+      fill(255,0,0);
+      text(txSans, 870, 50);
     }
   }
   
@@ -161,41 +192,37 @@ void draw() {
   //}
   
   
-  // flag aspect
-  // pour calcul du ratio taille texture et taille drapeau
-  //float distX_total = dist(mass[0][0].position.x, mass[0][0].position.y, mass[dimGridX][0].position.x,mass[dimGridX][0].position.y);
-  //float distY_total = dist(mass[0][0].position.x, mass[0][0].position.y, mass[0][dimGridY].position.x,mass[0][dimGridY].position.y);
-  float longueurTexture =800;
-  float hauteurTexture = 1200;
+  if (texture){
+    // flag aspect
+    float longueurTexture = 800;
+    float hauteurTexture = 1200;
+    
+    float ratiolongueur = longueurTexture/(float)(dimGridX-1);
+    float ratiohauteur = hauteurTexture/(float)(dimGridY-1);
+    
+    for ( int i = 0; i < dimGridX-1; i++) {
+      for ( int j = 0; j < dimGridY-1; j++ ) {
+        float x1 = mass[i][j].position.x;
+        float y1 = mass[i][j].position.y;
+        float x2 = mass[i+1][j].position.x;
+        float y2 = mass[i+1][j].position.y;
+        float x3 = mass[i+1][j+1].position.x;
+        float y3 = mass[i+1][j+1].position.y;
+        float x4 = mass[i][j+1].position.x;
+        float y4 = mass[i][j+1].position.y;
+        
+        noStroke();
+        beginShape();
+        texture(img);
+        vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
+        vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
+        vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
+        vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
+        endShape();
   
-  float ratiolongueur = longueurTexture/(float)(dimGridY-1);
-  float ratiohauteur = hauteurTexture/(float)(dimGridX-1);
-  
-  for ( int i = 0; i < dimGridX-1; i++) {
-    for ( int j = 0; j < dimGridY-1; j++ ) {
-      float x1 = mass[i][j].position.x;
-      float y1 = mass[i][j].position.y;
-      float x2 = mass[i+1][j].position.x;
-      float y2 = mass[i+1][j].position.y;
-      float x3 = mass[i+1][j+1].position.x;
-      float y3 = mass[i+1][j+1].position.y;
-      float x4 = mass[i][j+1].position.x;
-      float y4 = mass[i][j+1].position.y;
-      
-      
-      noStroke();
-      beginShape();
-      texture(img);
-      //vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
-      //vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
-      //vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
-      //vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
-      endShape();
-      
-      //triangle(x1, y1, x2, y2, x3, y3);
+      }
     }
   }
-  
 }
 
 
@@ -247,38 +274,53 @@ void mousePressed() {
         this.dimGridY = 5;
         this.initGrid();
       }
-      // 10x10
+      // 8x12
       if (mouseY >= 50 && mouseY <= 70){
         marqueur_nb_points = 72;
-        this.dimGridX = 10;
-        this.dimGridY = 10;
+        this.dimGridX = 8;
+        this.dimGridY = 12;
         this.initGrid();
       }
-      // 15x15
+      // 12x18
       if (mouseY >= 70 && mouseY <= 90){
         marqueur_nb_points = 92;
-        this.dimGridX = 15;
-        this.dimGridY = 15;
+        this.dimGridX = 12;
+        this.dimGridY = 18;
+        Xinit = 90;
+        Yinit = 150;
         this.initGrid();
       }
     }
     
     // change diagonal spring
     if (mouseY >= 15 && mouseY <= 30){
-    // With
-    if (mouseX >= 795 && mouseX <= 845){
-      marqueur_diag = 780;
-      diagonal_spring = true;
-      this.initGrid();
+    // with diagonal spring
+      if (mouseX >= 795 && mouseX <= 845){
+        marqueur_diag = 780;
+        diagonal_spring = true;
+        this.initGrid();
+      }
+      // without diagonal spring
+      if (mouseX >= 865 && mouseX <= 915){
+        marqueur_diag = 850;
+        diagonal_spring = false;
+        this.initGrid();
+      }
     }
-    // Without
-    if (mouseX >= 865 && mouseX <= 915){
-      marqueur_diag = 850;
-      diagonal_spring = false;
-      this.initGrid();
-    }
-  }
     
+    // change texture
+    if (mouseY >= 40 && mouseY <= 53){
+      // with texture
+      if (mouseX >= 795 && mouseX <= 845){
+        marqueur_texture = 780;
+        texture = true;
+      }
+      // without texture
+      if (mouseX >= 865 && mouseX <= 915){        
+        marqueur_texture = 850;
+        texture = false;
+      }
+    }
     
     
   }
