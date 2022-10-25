@@ -9,13 +9,19 @@ PImage img;
 String tx5 = "- 5x5"; 
 String tx10 = "- 10x10";
 String tx15 = "- 15x15";
+String txAvec = "Avec";
+String txSans = "Sans";
 
 int dimGridX = 8;
 int dimGridY = 12;
 
 // selected number of discretisation points
-int marqueur = 71;
- 
+int marqueur_nb_points = 71;
+// selected diagonal spring
+int marqueur_diag = 780;
+
+// with diagonal spring
+boolean diagonal_spring = true;
  
 // width of the windows
 int dimX = 1000;
@@ -80,7 +86,7 @@ void draw() {
   
   // marker
   fill(255, 0, 0);
-  text(" < ", 80, marqueur);
+  text(" < ", 80, marqueur_nb_points);
   
   // change the colour of the next selected value
   if (mouseX >= 18 && mouseX <= 70){
@@ -98,6 +104,32 @@ void draw() {
     if (mouseY >= 70 && mouseY <= 90){
       fill(255,0,0);
       text(tx15, 15, 90);
+    }
+  }
+  
+  // change the number of spring
+  fill(255);
+  textSize(25);
+  text("Ressorts diagonaux :", 550, 25); 
+  textSize(20);
+  text(txAvec, 800, 25);
+  text(txSans, 870, 25);
+  
+  // marker
+  fill(255, 0, 0);
+  text(" > ", marqueur_diag, 25);
+  
+  // change the colour of the next selected value
+  if (mouseY >= 15 && mouseY <= 30){
+    // 5x5
+    if (mouseX >= 795 && mouseX <= 845){
+      fill(255,0,0);
+      text(txAvec, 800, 25);
+    }
+    // 10x10
+    if (mouseX >= 865 && mouseX <= 915){
+      fill(255,0,0);
+      text(txSans, 870, 25);
     }
   }
   
@@ -154,10 +186,10 @@ void draw() {
       noStroke();
       beginShape();
       texture(img);
-      vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
-      vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
-      vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
-      vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
+      //vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
+      //vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
+      //vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
+      //vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
       endShape();
       
       //triangle(x1, y1, x2, y2, x3, y3);
@@ -210,25 +242,44 @@ void mousePressed() {
     if (mouseX >= 18 && mouseX <= 70){
       // 5x5
       if (mouseY >= 30 && mouseY <= 50){
-        marqueur = 52;
+        marqueur_nb_points = 52;
         this.dimGridX = 5;
         this.dimGridY = 5;
         this.initGrid();
       }
       // 10x10
       if (mouseY >= 50 && mouseY <= 70){
-        marqueur = 72;
+        marqueur_nb_points = 72;
         this.dimGridX = 10;
         this.dimGridY = 10;
         this.initGrid();
       }
       // 15x15
       if (mouseY >= 70 && mouseY <= 90){
-        marqueur = 92;
+        marqueur_nb_points = 92;
         this.dimGridX = 15;
         this.dimGridY = 15;
         this.initGrid();
       }
     }
+    
+    // change diagonal spring
+    if (mouseY >= 15 && mouseY <= 30){
+    // With
+    if (mouseX >= 795 && mouseX <= 845){
+      marqueur_diag = 780;
+      diagonal_spring = true;
+      this.initGrid();
+    }
+    // Without
+    if (mouseX >= 865 && mouseX <= 915){
+      marqueur_diag = 850;
+      diagonal_spring = false;
+      this.initGrid();
+    }
+  }
+    
+    
+    
   }
 }

@@ -20,6 +20,9 @@ class Mass {
   
   //
   PVector forceExterieure = new PVector(0,0);
+  
+  PVector forceDiagLeft = new PVector(0,0);
+  PVector forceDiagRight = new PVector(0,0);
 
   // the radius of the mass
   float radius;
@@ -35,7 +38,7 @@ class Mass {
   final float D = 0.4;
   
   //stifness coefficient
-  float k=50;
+  float k=100;
   
   // spring length difference
   float delta_l;
@@ -203,9 +206,13 @@ class Mass {
 
     PVector forceLeft =       calculRessortForce(i, j-1, false);
     PVector forceUp =         calculRessortForce(i-1, j, false);
-    //PVector forceDiagLeft =   calculRessortForce(i-1, j-1, true);
-    //PVector forceDiagRight =  calculRessortForce(i-1, j+1, true);
-    
+    // diagonal spring
+    PVector forceDiagLeft = new PVector(0,0);
+    PVector forceDiagRight = new PVector(0,0);
+    if (diagonal_spring ){
+      forceDiagLeft =   calculRessortForce(i-1, j-1, true);
+      forceDiagRight =  calculRessortForce(i-1, j+1, true);
+    }
     //sum of forces
     PVector air = new PVector (velocity.x * -D , velocity.y * -D);
     PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
@@ -217,8 +224,8 @@ class Mass {
     //PVector somme = new PVector (0,0);
     somme.add(forceLeft);
     somme.add(forceUp);
-    //somme.add(forceDiagLeft);
-    //somme.add(forceDiagRight);
+    somme.add(forceDiagLeft);
+    somme.add(forceDiagRight);
     somme.add(forceExterieure);
     forceExterieure = new PVector(0,0);
     somme.div(m);
