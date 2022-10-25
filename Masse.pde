@@ -35,7 +35,7 @@ class Mass {
   final float D = 0.4;
   
   //stifness coefficient
-  float k=100;
+  float k=50;
   
   // spring length difference
   float delta_l;
@@ -177,11 +177,34 @@ class Mass {
     
     //PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
     //PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+    
+    
+    
+    //// flag aspect
+    //for ( int i = 0; i < dimGridX-1; i++) {
+    //  for ( int j = 0; j < dimGridY-1; j++ ) {
+    //    float x1 = mass[i][j].position.x;
+    //    float y1 = mass[i][j].position.y;
+    //    float x2 = mass[i+1][j].position.x;
+    //    float y2 = mass[i+1][j].position.y;
+    //    float x3 = mass[i+1][j+1].position.x;
+    //    float y3 = mass[i+1][j+1].position.y;
+    //    float x4 = mass[i][j+1].position.x;
+    //    float y4 = mass[i][j+1].position.y;
+    //    fill(150,0,127);
+    //    stroke(255);
+    //    quad(x1, y1, x2, y2, x3, y3, x4, y4);
+    //  }
+    //} 
+    
+    
+    
+    
 
-    PVector forceLeft =       calculRessortForce(i, j-1);
-    PVector forceUp =         calculRessortForce(i-1, j);
-    //PVector forceDiagLeft =   calculRessortForce(i-1, j-1);
-    //PVector forceDiagRight =  calculRessortForce(i-1, j+1);
+    PVector forceLeft =       calculRessortForce(i, j-1, false);
+    PVector forceUp =         calculRessortForce(i-1, j, false);
+    //PVector forceDiagLeft =   calculRessortForce(i-1, j-1, true);
+    //PVector forceDiagRight =  calculRessortForce(i-1, j+1, true);
     
     //sum of forces
     PVector air = new PVector (velocity.x * -D , velocity.y * -D);
@@ -212,7 +235,7 @@ class Mass {
   /**
    *
    */
-  PVector calculRessortForce(int indexRowSpringAnchor, int indexColumnSpringAnchor) {
+  PVector calculRessortForce(int indexRowSpringAnchor, int indexColumnSpringAnchor, boolean isDiag) {
     if ( indexRowSpringAnchor < 0 || indexRowSpringAnchor >= dimGridX || indexColumnSpringAnchor < 0 || indexColumnSpringAnchor >= dimGridY )
       return new PVector(0,0);
     
@@ -223,7 +246,11 @@ class Mass {
     
     float d_l_v = ((xMasse - xAnchorSpring)) * ((xMasse - xAnchorSpring));
     float d_l_h = ((yMasse - yAnchorSpring)) * ((yMasse - yAnchorSpring));
-    float d_l = sqrt(d_l_v + d_l_h) - l0;
+    float d_l;
+    if ( isDiag )
+      d_l = sqrt(d_l_v + d_l_h) - (l0*sqrt(2));      
+    else
+      d_l = sqrt(d_l_v + d_l_h) - l0;
     
     // distance (pour normalisation) : dist(x1, y1, x2, y2)
     float distance = dist(xMasse, yMasse, xAnchorSpring, yAnchorSpring);

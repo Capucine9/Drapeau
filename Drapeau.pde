@@ -1,14 +1,17 @@
 /**
  * Main script of the program 
  */
+
+// texture
+PImage img;
  
 // button text
 String tx5 = "- 5x5"; 
 String tx10 = "- 10x10";
 String tx15 = "- 15x15";
 
-int dimGridX = 10;
-int dimGridY = 10;
+int dimGridX = 8;
+int dimGridY = 12;
 
 // selected number of discretisation points
 int marqueur = 71;
@@ -48,13 +51,14 @@ final PVector GRAVITY = new PVector(0,9.8);
 
 void settings () {
   // set the size of the windows
-   size(dimX, dimY);
+   size(dimX, dimY, P2D);
 }
 
 
 void setup() {
   //this.newMass();
   this.initGrid();
+  img = loadImage("drapeau.png");
 }
 
 
@@ -123,6 +127,43 @@ void draw() {
   //    }
   //  }
   //}
+  
+  
+  // flag aspect
+  // pour calcul du ratio taille texture et taille drapeau
+  //float distX_total = dist(mass[0][0].position.x, mass[0][0].position.y, mass[dimGridX][0].position.x,mass[dimGridX][0].position.y);
+  //float distY_total = dist(mass[0][0].position.x, mass[0][0].position.y, mass[0][dimGridY].position.x,mass[0][dimGridY].position.y);
+  float longueurTexture =800;
+  float hauteurTexture = 1200;
+  
+  float ratiolongueur = longueurTexture/(float)(dimGridY-1);
+  float ratiohauteur = hauteurTexture/(float)(dimGridX-1);
+  
+  for ( int i = 0; i < dimGridX-1; i++) {
+    for ( int j = 0; j < dimGridY-1; j++ ) {
+      float x1 = mass[i][j].position.x;
+      float y1 = mass[i][j].position.y;
+      float x2 = mass[i+1][j].position.x;
+      float y2 = mass[i+1][j].position.y;
+      float x3 = mass[i+1][j+1].position.x;
+      float y3 = mass[i+1][j+1].position.y;
+      float x4 = mass[i][j+1].position.x;
+      float y4 = mass[i][j+1].position.y;
+      
+      
+      noStroke();
+      beginShape();
+      texture(img);
+      vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
+      vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
+      vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
+      vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
+      endShape();
+      
+      //triangle(x1, y1, x2, y2, x3, y3);
+    }
+  }
+  
 }
 
 
