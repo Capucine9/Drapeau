@@ -1,9 +1,12 @@
 /**
  * Main script of the program 
  */
+import peasy.*;
 
 // texture
 PImage img;
+
+PeasyCam cam;
  
 // button text
 String tx5 = "- 5x5"; 
@@ -58,7 +61,7 @@ final PVector GRAVITY = new PVector(0,9.8);
 
 void settings () {
   // set the size of the windows
-   size(dimX, dimY, P2D);
+   size(dimX, dimY, P3D);
 }
 
 
@@ -66,6 +69,11 @@ void setup() {
   //this.newMass();
   this.initGrid();
   img = loadImage("drapeau.png");
+  
+  cam = new PeasyCam(this, dimX/2, dimY/2, 0, 700);
+  cam.setMinimumDistance(50);
+  cam.setMaximumDistance(700);
+  cam.setActive(false);
 }
 
 
