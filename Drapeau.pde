@@ -73,6 +73,7 @@ void setup() {
   cam = new PeasyCam(this, dimX/2, dimY/2, 0, 700);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(700);
+  cam.YawRotationMode();
   //cam.setActive(false);
 }
 
@@ -83,6 +84,7 @@ void setup() {
  **/
 void draw() {
   background(51);
+  cam.beginHUD();
   
   // change in the number of discretisation points
   fill(255);
@@ -168,6 +170,7 @@ void draw() {
       text(txSans, 870, 50);
     }
   }
+  cam.endHUD();
   
   // update position of the mass and display it
   //mass.update();
