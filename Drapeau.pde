@@ -42,9 +42,6 @@ Mass[][] mass;
 int Xinit = 200;
 int Yinit = 200;
 
-// size of the mass
-float taille = 20;
-
 // mass of the selected mass
 float masse = 1;
 
@@ -250,7 +247,7 @@ void initGrid () {
     for ( int j = 0; j < dimGridY; j++ ) {
       int x = Xinit + (l0 * j);
       int y = Yinit + (l0 * i);
-      mass[i][j] = new Mass(i, j, x, y, taille, masse, l0, true);
+      mass[i][j] = new Mass(i, j, x, y, masse, l0, true);
     }
   }
   mass[0][0].canMove = false;
@@ -272,6 +269,7 @@ void mousePressed() {
         marqueur_nb_points = 52;
         this.dimGridX = 5;
         this.dimGridY = 5;
+        l0 = 50;
         this.initGrid();
       }
       // 8x12
@@ -279,6 +277,7 @@ void mousePressed() {
         marqueur_nb_points = 72;
         this.dimGridX = 8;
         this.dimGridY = 12;
+        l0 = 50;
         this.initGrid();
       }
       // 12x18
@@ -288,6 +287,7 @@ void mousePressed() {
         this.dimGridY = 18;
         Xinit = 90;
         Yinit = 150;
+        l0 = 20;
         this.initGrid();
       }
     }

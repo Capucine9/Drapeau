@@ -21,11 +21,8 @@ class Mass {
   //
   PVector forceExterieure = new PVector(0,0);
   
-  PVector forceDiagLeft = new PVector(0,0);
-  PVector forceDiagRight = new PVector(0,0);
-
   // the radius of the mass
-  float radius;
+  float radius = 2;
   
   // the mass of the mass
   float m;
@@ -56,7 +53,7 @@ class Mass {
   /**
    * Constructor of the object
    **/
-  Mass(int i, int j, float x, float y, float diametre, float masse, int longueur_a_vide, boolean _canMove) {
+  Mass(int i, int j, float x, float y, float masse, int longueur_a_vide, boolean _canMove) {
     this.i = i;
     this.j = j;
     float Xinit = x;
@@ -64,7 +61,6 @@ class Mass {
     position = new PVector(x, y);
     // init an random initial velocity
     //velocity0 = new PVector(0, 0);
-    radius = diametre / 2;
     //velocity = new PVector(velocity0.x, velocity0.y);
     //velocity = new PVector(velocity.x, velocity.y);
     m = masse;
@@ -288,8 +284,6 @@ class Mass {
   
     
     // display the velocity of the mass
-    stroke(204, 102, 0);
-    line(position.x, position.y, position.x + velocity.x*20, position.y + velocity.y*20);
     
   }
 }
