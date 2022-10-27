@@ -73,7 +73,7 @@ void setup() {
   cam = new PeasyCam(this, dimX/2, dimY/2, 0, 700);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(700);
-  cam.YawRotationMode();
+  cam.setYawRotationMode();
   //cam.setActive(false);
 }
 

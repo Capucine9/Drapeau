@@ -41,7 +41,7 @@ class Mass {
   float delta_l;
   
   // damping coefficient
-  float c=3;
+  float c=30;
   
   // wind velocity
   PVector wind_velocity = new PVector(100, 0, 10);
@@ -267,8 +267,10 @@ class Mass {
     PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny, -k * d_l * Nz);
     PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny, -c * velocity.z * Nz);
     
-    stroke(255);
-    line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
+    if ( !texture ) {
+      stroke(255);
+      line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
+    }
     
     PVector force = stifness.add(damping);
     mass[indexRowSpringAnchor][indexColumnSpringAnchor].forceExterieure.add(force.mult(-1));
@@ -280,11 +282,13 @@ class Mass {
    * Display the mass and his velocity vector
    **/
   void display() {
-    noStroke();
-    fill(204);
-    translate(position.x, position.y, position.z);
-    sphere(radius*2);
-    translate(-position.x, -position.y, -position.z);
+    if ( !texture ) {
+      noStroke();
+      fill(204);
+      //translate(position.x, position.y, position.z);
+      //sphere(radius*2);
+      //translate(-position.x, -position.y, -position.z);
+    }
   
     
     // display the velocity of the mass
