@@ -55,7 +55,7 @@ int l0 = 50;
 //float t = 0.0;
 
 // gravity force in m/s
-final PVector GRAVITY = new PVector(0,9.8);
+final PVector GRAVITY = new PVector(0,9.8,0);
 
 
 
@@ -73,7 +73,7 @@ void setup() {
   cam = new PeasyCam(this, dimX/2, dimY/2, 0, 700);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(700);
-  cam.setActive(false);
+  //cam.setActive(false);
 }
 
 
@@ -209,20 +209,24 @@ void draw() {
       for ( int j = 0; j < dimGridY-1; j++ ) {
         float x1 = mass[i][j].position.x;
         float y1 = mass[i][j].position.y;
+        float z1 = mass[i][j].position.z;
         float x2 = mass[i+1][j].position.x;
         float y2 = mass[i+1][j].position.y;
+        float z2 = mass[i+1][j].position.z;
         float x3 = mass[i+1][j+1].position.x;
         float y3 = mass[i+1][j+1].position.y;
+        float z3 = mass[i+1][j+1].position.z;
         float x4 = mass[i][j+1].position.x;
         float y4 = mass[i][j+1].position.y;
+        float z4 = mass[i][j+1].position.z;
         
         noStroke();
         beginShape();
         texture(img);
-        vertex(x1, y1, ratiohauteur*j, ratiolongueur*i);
-        vertex(x2, y2, ratiohauteur*j, ratiolongueur*(i+1));
-        vertex(x3, y3, ratiohauteur*(j+1), ratiolongueur*(i+1));
-        vertex(x4, y4, ratiohauteur*(j+1), ratiolongueur*i);
+        vertex(x1, y1, z1, ratiohauteur*j, ratiolongueur*i);
+        vertex(x2, y2, z2, ratiohauteur*j, ratiolongueur*(i+1));
+        vertex(x3, y3, z3, ratiohauteur*(j+1), ratiolongueur*(i+1));
+        vertex(x4, y4, z4, ratiohauteur*(j+1), ratiolongueur*i);
         endShape();
   
       }

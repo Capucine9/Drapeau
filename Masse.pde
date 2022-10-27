@@ -13,13 +13,13 @@ class Mass {
   //PVector velocity0;
   
   // the velocity of the mass at the time t;
-  PVector velocity = new PVector (0, 0);
+  PVector velocity = new PVector (0, 0, 0);
   
   // the acceleration of the mass at the time t;
   PVector acceleration;
   
   //
-  PVector forceExterieure = new PVector(0,0);
+  PVector forceExterieure = new PVector(0,0, 0);
   
   // the radius of the mass
   float radius = 2;
@@ -44,7 +44,7 @@ class Mass {
   float c=3;
   
   // wind velocity
-  PVector wind_velocity = new PVector(100, 0);
+  PVector wind_velocity = new PVector(100, 0, 10);
   
   // time step
   final float delta_t = 0.001;
@@ -56,9 +56,7 @@ class Mass {
   Mass(int i, int j, float x, float y, float masse, int longueur_a_vide, boolean _canMove) {
     this.i = i;
     this.j = j;
-    float Xinit = x;
-    float Yinit = y;
-    position = new PVector(x, y);
+    position = new PVector(x, y, 0);
     // init an random initial velocity
     //velocity0 = new PVector(0, 0);
     //velocity = new PVector(velocity0.x, velocity0.y);
@@ -203,15 +201,15 @@ class Mass {
     PVector forceLeft =       calculRessortForce(i, j-1, false);
     PVector forceUp =         calculRessortForce(i-1, j, false);
     // diagonal spring
-    PVector forceDiagLeft = new PVector(0,0);
-    PVector forceDiagRight = new PVector(0,0);
+    PVector forceDiagLeft = new PVector(0,0,0);
+    PVector forceDiagRight = new PVector(0,0,0);
     if (diagonal_spring ){
       forceDiagLeft =   calculRessortForce(i-1, j-1, true);
       forceDiagRight =  calculRessortForce(i-1, j+1, true);
     }
     //sum of forces
-    PVector air = new PVector (velocity.x * -D , velocity.y * -D);
-    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
+    PVector air = new PVector (velocity.x * -D , velocity.y * -D, velocity.z * -D);
+    PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D, wind_velocity.z * D);
     PVector somme = air.copy();
     somme.add(air);
     somme.add(wind);
@@ -244,29 +242,33 @@ class Mass {
     
     float xMasse = position.x;
     float yMasse = position.y;
+    float zMasse = position.z;
     float xAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.x;
     float yAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.y;
+    float zAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.z;
     
     float d_l_v = ((xMasse - xAnchorSpring)) * ((xMasse - xAnchorSpring));
     float d_l_h = ((yMasse - yAnchorSpring)) * ((yMasse - yAnchorSpring));
+    float d_l_p = ((zMasse - zAnchorSpring)) * ((zMasse - zAnchorSpring));
     float d_l;
     if ( isDiag )
-      d_l = sqrt(d_l_v + d_l_h) - (l0*sqrt(2));      
+      d_l = sqrt(d_l_v + d_l_h + d_l_p) - (l0*sqrt(2));      
     else
-      d_l = sqrt(d_l_v + d_l_h) - l0;
+      d_l = sqrt(d_l_v + d_l_h + d_l_p) - l0;
     
     // distance (pour normalisation) : dist(x1, y1, x2, y2)
-    float distance = dist(xMasse, yMasse, xAnchorSpring, yAnchorSpring);
+    float distance = dist(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
     //norme en x
     float Nx = (xMasse - xAnchorSpring)/distance;
     //norme en y
     float Ny = (yMasse - yAnchorSpring)/distance;
+    float Nz = (zMasse - zAnchorSpring)/distance;
     
-    PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
-    PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
+    PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny, -k * d_l * Nz);
+    PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny, -c * velocity.z * Nz);
     
     stroke(255);
-    line(xMasse, yMasse, xAnchorSpring, yAnchorSpring);
+    line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
     
     PVector force = stifness.add(damping);
     mass[indexRowSpringAnchor][indexColumnSpringAnchor].forceExterieure.add(force.mult(-1));
@@ -280,7 +282,9 @@ class Mass {
   void display() {
     noStroke();
     fill(204);
-    ellipse(position.x, position.y, radius*2, radius*2);
+    translate(position.x, position.y, position.z);
+    sphere(radius*2);
+    translate(-position.x, -position.y, -position.z);
   
     
     // display the velocity of the mass
