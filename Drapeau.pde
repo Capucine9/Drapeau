@@ -21,14 +21,14 @@ int dimGridY = 12;
 // selected number of discretisation points
 int marqueur_nb_points = 71;
 // selected diagonal spring
-int marqueur_diag = 780;
+int marqueur_diag = 850;
 // selected texture
-int marqueur_texture = 780;
+int marqueur_texture = 850;
 
 // with diagonal spring
-boolean diagonal_spring = true;
+boolean diagonal_spring = false;
 // with texture
-boolean texture = true;
+boolean texture = false;
  
 // width of the windows
 int dimX = 1000;
@@ -57,6 +57,11 @@ int l0 = 50;
 // gravity force in m/s
 final PVector GRAVITY = new PVector(0,9.8,0);
 
+// wind velocity
+PVector wind_velocity = new PVector(100, 1, 10);
+
+boolean decrease_wind = true;
+
 
 
 void settings () {
@@ -76,7 +81,6 @@ void setup() {
   cam.setYawRotationMode();
   //cam.setActive(false);
 }
-
 
 
 /**
@@ -172,10 +176,15 @@ void draw() {
   }
   cam.endHUD();
   
-  // update position of the mass and display it
-  //mass.update();
-  //mass.display();
-  //mass.checkBoundaryCollision();
+  // draw stake
+  stroke(50);
+  fill(255);
+  translate(mass[0][0].position.x+10, mass[0][0].position.y+10000/2, 0);
+  box(10,10000,10);
+  translate(-mass[0][0].position.x+10, -(mass[0][0].position.y+10000/2), 0);
+  //line(mass[0][0].position.x-10, mass[0][0].position.y, 0, mass[0][0].position.x-10, 10000, 0);  // ligne gauche
+  //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x-10, mass[0][0].position.y, 0);  // parallele
+  //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x, 10000, 0);  // ligne droite
   
   for ( int y = dimGridY-1; y >= 0; y--) {
     for ( int x = dimGridX-1; x >= 0; x-- ) {
@@ -234,6 +243,29 @@ void draw() {
   
       }
     }
+  }
+  
+  
+  // random wind
+  float choice = random(0,10000);
+  if ( choice > 9900 ) {
+    float choice_more = random(0,100);
+    float ran = random(0,0.5);
+    int borne = 85;
+    float switch_z = random(0,100);
+    if ( !decrease_wind ) borne = 100 - borne;
+    if ( choice_more > borne ) {
+      System.out.println("wsh");
+      wind_velocity.add(wind_velocity.copy().mult(ran));
+    }else{
+      wind_velocity.sub(wind_velocity.copy().mult(ran));
+    }
+    if ( switch_z > 60 ) wind_velocity.z *= -1;
+    if ( wind_velocity.x < 30 && decrease_wind )
+      decrease_wind = false;
+    else if ( wind_velocity.x > 200 && !decrease_wind )
+      decrease_wind = true;
+    System.out.println("New wind : "+wind_velocity);
   }
 }
 

@@ -41,10 +41,8 @@ class Mass {
   float delta_l;
   
   // damping coefficient
-  float c=20;
+  float c=10;
   
-  // wind velocity
-  PVector wind_velocity = new PVector(100, 0, 00);
   
   // time step
   final float delta_t = 0.003;
@@ -268,23 +266,21 @@ class Mass {
     PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny, -c * velocity.z * Nz);
     
     if ( !texture ) {
-      //float ratio = 1-(d_l/l0)*sqrt(k);
-      //int green = 255;
-      //int blue = 255;
-      //if ( ratio > 0.5 ) {
+      float ratio = 1-(d_l/l0)*sqrt(k);
+      int green = 255;
+      int blue = 255;
+      if ( ratio > 0.5 ) {
         
-      //  green = 255;
-      //  blue = (int) (255 * ((ratio-0.5)/0.5));
-      //}else{
-      //  green = (int) (255 * (ratio/0.5));
-      //  blue = 0;
-      //}
+        green = 255;
+        blue = (int) (255 * ((ratio-0.5)/0.5));
+      }else{
+        green = (int) (255 * (ratio/0.5));
+        blue = 0;
+      }
         
-      //System.out.println((ratio/0.5));
-      //System.out.println(green+" "+blue);
-      //stroke(255,green,blue);
+      stroke(255,green,blue);
       
-      stroke(255);
+      //stroke(255);
       line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
     }
     
