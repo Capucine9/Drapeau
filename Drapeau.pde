@@ -75,9 +75,9 @@ void setup() {
   this.initGrid();
   img = loadImage("drapeau.png");
   
-  cam = new PeasyCam(this, dimX/2, dimY/2, 0, 700);
+  cam = new PeasyCam(this, dimX/2, dimY/2, 0, 900);
   cam.setMinimumDistance(50);
-  cam.setMaximumDistance(700);
+  cam.setMaximumDistance(1500);
   cam.setYawRotationMode();
   //cam.setActive(false);
 }
@@ -179,9 +179,15 @@ void draw() {
   // draw stake
   stroke(50);
   fill(255);
-  translate(mass[0][0].position.x+10, mass[0][0].position.y+10000/2, 0);
+  translate(mass[0][0].position.x+5, mass[0][0].position.y+10000/2, 0);
   box(10,10000,10);
-  translate(-mass[0][0].position.x+10, -(mass[0][0].position.y+10000/2), 0);
+  translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+10000/2), 0);
+  
+  
+  fill(120,150,120);
+  translate(width/2, height*1.4, 0);
+  box(3000,10,3000);
+  translate(-width/2, -height*1.4, 0);
   //line(mass[0][0].position.x-10, mass[0][0].position.y, 0, mass[0][0].position.x-10, 10000, 0);  // ligne gauche
   //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x-10, mass[0][0].position.y, 0);  // parallele
   //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x, 10000, 0);  // ligne droite
