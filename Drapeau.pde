@@ -1,13 +1,23 @@
-/**
- * Main script of the program 
- */
+// import 3D camera handler package (PeasyCam)
 import peasy.*;
+
+/**
+ * Main script of the program, script to launch with Processing
+ */
+
 
 // texture
 PImage img;
 
+// camera
 PeasyCam cam;
- 
+
+
+
+// ======================================================================================
+// IHM atributes
+// ======================================================================================
+
 // button text
 String tx5 = "- 5x5"; 
 String tx8 = "- 8x12";
@@ -15,83 +25,104 @@ String tx12 = "- 12x18";
 String txAvec = "Avec";
 String txSans = "Sans";
 
-int dimGridX = 8;
-int dimGridY = 12;
-
-// selected number of discretisation points
+// marker ord for selected number of discretisation points
 int marqueur_nb_points = 71;
-// selected diagonal spring
+// markeur ord for selected diagonal spring
 int marqueur_diag = 850;
-// selected texture
+// marker ord for selected texture
 int marqueur_texture = 850;
 
-// with diagonal spring
+// boolean to make simulation with diagonal spring or not
 boolean diagonal_spring = false;
-// with texture
+// boolean to make simulation with texture or not
 boolean texture = false;
  
-// width of the windows
-int dimX = 1000;
-// height of the windows 
-int dimY = 800;
 
-// number of mass
-int nbMass = 2;
+
+// ======================================================================================
+// Atributes link to the mass
+// ======================================================================================
  
-// the mass of the project
+// the mass thta represent a flag ([i][], i represent the line. [][j], j represent a column)
 Mass[][] mass;
 
-// coordinates of the first mass
+// coordinates of the first mass (upper left)
 int Xinit = 200;
 int Yinit = 200;
-
-// mass of the selected mass
-float masse = 1;
 
 // empty length spring
 int l0 = 50;
 
-// tick/time elapse
-//float t = 0.0;
 
-// gravity force in m/s
-final PVector GRAVITY = new PVector(0,9.8,0);
+ 
+// ======================================================================================
+// Atributes link to the mass
+// ======================================================================================
+ 
+// width of the windows
+int dimWidth = 1000;
+// height of the windows 
+int dimHeight = 800;
 
-// wind velocity
-PVector wind_velocity = new PVector(100, 1, 10);
-
+// boolean that show if the program decrease wind velocity in the calcul of the new velocity
 boolean decrease_wind = true;
 
 
 
+
+
+/**
+ * Function called after the function setup
+ **/
 void settings () {
   // set the size of the windows
-   size(dimX, dimY, P3D);
+   size(dimWidth, dimHeight, P3D);
 }
 
 
+
+
+
+/**
+ * Function called at the start of the program
+ **/
 void setup() {
-  //this.newMass();
+  // init the grid of mass that represent the flag
   this.initGrid();
+  // load the imageof the texture
   img = loadImage("drapeau.png");
   
-  cam = new PeasyCam(this, dimX/2, dimY/2, 0, 900);
-  cam.setMinimumDistance(50);
-  cam.setMaximumDistance(1500);
-  cam.setYawRotationMode();
-  //cam.setActive(false);
+  // init the camera 
+  cam = new PeasyCam(this, dimWidth/2, dimHeight/2, 0, 900);
+  cam.setMinimumDistance(50);        // the power of the zoom
+  cam.setMaximumDistance(1500);      // the power of the dezoom
+  cam.setYawRotationMode();          // allow rotation only on the axe y
 }
+
+
+
 
 
 /**
  * Method call at each frame of the windows
  **/
 void draw() {
+  // color of the background of the window
   background(51);
+  
+  
+  // ================================================================================================================================================================
+  // IHM declaration (no affected by rotation)
+  // ================================================================================================================================================================
   cam.beginHUD();
   
-  // change in the number of discretisation points
+  
+  // ======================================================================================
+  // IHM to change the number of discretisation points
+  // ======================================================================================
   fill(255);
+  
+  // Text
   textSize(25);
   text("Nombre de points de la discrétisation :", 15, 25); 
   textSize(20);
@@ -99,12 +130,9 @@ void draw() {
   text(tx8, 15, 70);
   text(tx12, 15, 90);
   
-  text("Vent : [x="+(int)wind_velocity.x+", y="+(int)wind_velocity.y+", z="+(int)wind_velocity.z+"]", 15, 120); 
-  
-  // marker
+  // Marker
   fill(255, 0, 0);
   text(" < ", 80, marqueur_nb_points);
-  
   // change the colour of the next selected value
   if (mouseX >= 18 && mouseX <= 70){
     // 5x5
@@ -124,7 +152,17 @@ void draw() {
     }
   }
   
-  // change the number of spring
+  
+  // ======================================================================================
+  // IHM to display wind velocity
+  // ======================================================================================
+  fill(255);
+  text("Vent : [x="+(int)wind_velocity.x+", y="+(int)wind_velocity.y+", z="+(int)wind_velocity.z+"]", 15, 120); 
+  
+  
+  // ======================================================================================
+  // IHM to command the precense of diagonal spring in the flag
+  // ======================================================================================
   fill(255);
   textSize(25);
   text("Ressorts diagonaux :", 550, 25); 
@@ -132,10 +170,9 @@ void draw() {
   text(txAvec, 800, 25);
   text(txSans, 870, 25);
   
-  // marker
+  // Marker
   fill(255, 0, 0);
   text(" > ", marqueur_diag, 25);
-  
   // change the colour of the next selected value
   if (mouseY >= 15 && mouseY <= 30){
     // with diagonal spring
@@ -151,7 +188,9 @@ void draw() {
   }
   
   
-  // change the texture
+  // ======================================================================================
+  // IHM to command the precense of texture on the flag
+  // ======================================================================================
   fill(255);
   textSize(25);
   text("Texture :", 550, 50); 
@@ -159,7 +198,7 @@ void draw() {
   text(txAvec, 800, 50);
   text(txSans, 870, 50);
   
-  // marker
+  // Marker
   fill(255, 0, 0);
   text(" > ", marqueur_texture, 50);
   
@@ -176,57 +215,62 @@ void draw() {
       text(txSans, 870, 50);
     }
   }
-  cam.endHUD();
   
-  // draw stake
+  
+  cam.endHUD();
+  // ================================================================================================================================================================
+  // IHM declaration end (no affected by rotation)
+  // ================================================================================================================================================================
+  
+  
+  
+  // ======================================================================================
+  // Draw stake
+  // ======================================================================================
   stroke(50);
   fill(255);
-  translate(mass[0][0].position.x+5, mass[0][0].position.y+10000/2, 0);
-  box(10,10000,10);
-  translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+10000/2), 0);
+  int stake_length = 1000;
+  translate(mass[0][0].position.x+5, mass[0][0].position.y+stake_length/2, 0);
+  box(10,stake_length,10);
+  translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+stake_length/2), 0);
   
   
+  
+  // ======================================================================================
+  // Draw ground
+  // ======================================================================================
   fill(120,150,120);
   translate(width/2, height*1.4, 0);
   box(3000,10,3000);
   translate(-width/2, -height*1.4, 0);
-  //line(mass[0][0].position.x-10, mass[0][0].position.y, 0, mass[0][0].position.x-10, 10000, 0);  // ligne gauche
-  //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x-10, mass[0][0].position.y, 0);  // parallele
-  //line(mass[0][0].position.x, mass[0][0].position.y, 0, mass[0][0].position.x, 10000, 0);  // ligne droite
   
-  for ( int y = dimGridY-1; y >= 0; y--) {
-    for ( int x = dimGridX-1; x >= 0; x-- ) {
+  
+  
+  // ======================================================================================
+  // Update mass positions and display them
+  // ======================================================================================
+  for ( int y = nbMasseAbs-1; y >= 0; y--) {
+    for ( int x = nbMasseOrd-1; x >= 0; x-- ) {
       mass[x][y].update();
       mass[x][y].display();
     }
   }
-    
-  //////////////////////////////////
-  //for ( int j = 0; j < dimGridX ; j++ ) {
-  //  for (Mass m : mass[j]) {
-  //    m.update();
-  //    m.display();
-      
-  //    // line representing a mass-spring system
-  //    stroke(255);
-  //    line(Xinit, Yinit, mass[0][0].position.x, mass[0][0].position.y);
-  //    for (int i=0; i < nbMass-1; i++){
-  //      //line(mass[0][i].position.x, mass[0][i].position.y, mass[0][i+1].position.x, mass[0][i+1].position.y);
-  //    }
-  //  }
-  //}
   
   
+  
+  // ======================================================================================
+  // Draw texture (if activated)
+  // ======================================================================================
   if (texture){
     // flag aspect
     float longueurTexture = 800;
     float hauteurTexture = 1200;
     
-    float ratiolongueur = longueurTexture/(float)(dimGridX-1);
-    float ratiohauteur = hauteurTexture/(float)(dimGridY-1);
+    float ratiolongueur = longueurTexture/(float)(nbMasseOrd-1);
+    float ratiohauteur = hauteurTexture/(float)(nbMasseAbs-1);
     
-    for ( int i = 0; i < dimGridX-1; i++) {
-      for ( int j = 0; j < dimGridY-1; j++ ) {
+    for ( int i = 0; i < nbMasseOrd-1; i++) {
+      for ( int j = 0; j < nbMasseAbs-1; j++ ) {
         float x1 = mass[i][j].position.x;
         float y1 = mass[i][j].position.y;
         float z1 = mass[i][j].position.z;
@@ -252,60 +296,66 @@ void draw() {
       }
     }
   }
+    
   
   
-  // random wind
-  float choice = random(0,10000);
-  if ( choice > 9900 ) {
-    float choice_more = random(0,100);
-    float ran = random(0,0.5);
-    int borne = 85;
-    float switch_z = random(0,100);
-    if ( !decrease_wind ) borne = 100 - borne;
+  // ======================================================================================
+  // Calculate random wind
+  // ======================================================================================
+  int choice_max = 10000;
+  float choice = random(0,choice_max);
+  
+  // probability to change the wind
+  if ( choice > change_wind_proba*choice_max ) {
+    float choice_more_max = 100;
+    float choice_more = random(0,choice_more_max);    // probability to increase the wind (else decrease)
+    float ran = random(0,factor_wind_max);            // factor of the actual wind, to add/remove to the wind
+    float switch_z_max = 100;
+    float switch_z = random(0,switch_z_max);          // probability to invert the Z direction of the wind
+    
+    int borne =  (int) (add_wind_proba*choice_more_max);
+    if ( !decrease_wind ) borne = (int) (1*choice_more_max) - borne;
+    
+    // increase the wind according to the radnom value
     if ( choice_more > borne ) {
       wind_velocity.add(wind_velocity.copy().mult(ran));
     }else{
       wind_velocity.sub(wind_velocity.copy().mult(ran));
     }
-    if ( switch_z > 60 ) wind_velocity.z *= -1;
-    if ( wind_velocity.x < 30 && decrease_wind )
+    
+    // invert the Z velocity of the wind (if yes with proba)
+    if ( switch_z > invert_Z_wind_proba*switch_z_max ) wind_velocity.z *= -1;
+    
+    // change the increase or decrease mode of the wind (to avoid unnatural wind)
+    if ( wind_velocity.x < min_X_velocity && decrease_wind )
       decrease_wind = false;
-    else if ( wind_velocity.x > 200 && !decrease_wind )
+    else if ( wind_velocity.x > max_X_velocity && !decrease_wind )
       decrease_wind = true;
   }
 }
 
 
 
-///**
-// * Create a new mass and init its trajectory
-// **/
-//void newMass() {
-  
-//  // init the mass with size and random position, according to the selected limits
-//  //mass = new Mass(Xinit -10, Yinit+l0, taille, masse, l0);
-//  //t = 0.0;
-  
-//  ////////////////////////////////////
-//  for (int i=0; i < nbMass; i++){
-//    //mass[i] = new Mass(Xinit, Yinit + (l0 * (i+1)), taille, masse, l0);
-//  }
-  
-//}
 
 
+/**
+ * Init all themass of the system with space of l0 between them. The first mass of the first and last line
+ * are fixed and can't move.
+ **/
 void initGrid () {
-  mass = new Mass[dimGridX][dimGridY];
-  for ( int i = 0; i < dimGridX; i++) {
-    for ( int j = 0; j < dimGridY; j++ ) {
+  mass = new Mass[nbMasseOrd][nbMasseAbs];
+  for ( int i = 0; i < nbMasseOrd; i++) {
+    for ( int j = 0; j < nbMasseAbs; j++ ) {
       int x = Xinit + (l0 * j);
       int y = Yinit + (l0 * i);
       mass[i][j] = new Mass(i, j, x, y, masse, l0, true);
     }
   }
   mass[0][0].canMove = false;
-  mass[dimGridX-1][0].canMove = false;
+  mass[nbMasseOrd-1][0].canMove = false;
 }
+
+
 
 
 
@@ -315,37 +365,40 @@ void initGrid () {
 void mousePressed() {
   // if the left button of the mouse is pressed
   if ( mouseButton == LEFT ) {
-    // change the number of discretisation points
+    
+    // ======================================================================================
+    // Change number of discretisation points
+    // ======================================================================================
     if (mouseX >= 18 && mouseX <= 70){
       // 5x5
       if (mouseY >= 30 && mouseY <= 50){
         marqueur_nb_points = 52;
-        this.dimGridX = 5;
-        this.dimGridY = 5;
+        this.nbMasseOrd = 20;
+        this.nbMasseAbs = 35;
         l0 = 50;
         this.initGrid();
       }
       // 8x12
       if (mouseY >= 50 && mouseY <= 70){
         marqueur_nb_points = 72;
-        this.dimGridX = 8;
-        this.dimGridY = 12;
+        this.nbMasseOrd = 8;
+        this.nbMasseAbs = 12;
         l0 = 50;
         this.initGrid();
       }
       // 12x18
       if (mouseY >= 70 && mouseY <= 90){
         marqueur_nb_points = 92;
-        this.dimGridX = 12;
-        this.dimGridY = 18;
-        Xinit = 90;
-        Yinit = 150;
+        this.nbMasseOrd = 12;
+        this.nbMasseAbs = 18;
         l0 = 20;
         this.initGrid();
       }
     }
     
-    // change diagonal spring
+    // ======================================================================================
+    // Change diagonal spring mode
+    // ======================================================================================
     if (mouseY >= 15 && mouseY <= 30){
     // with diagonal spring
       if (mouseX >= 795 && mouseX <= 845){
@@ -361,7 +414,9 @@ void mousePressed() {
       }
     }
     
-    // change texture
+    // ======================================================================================
+    // Change texture display mode
+    // ======================================================================================
     if (mouseY >= 40 && mouseY <= 53){
       // with texture
       if (mouseX >= 795 && mouseX <= 845){

@@ -176,8 +176,8 @@ class Mass {
     
     
     //// flag aspect
-    //for ( int i = 0; i < dimGridX-1; i++) {
-    //  for ( int j = 0; j < dimGridY-1; j++ ) {
+    //for ( int i = 0; i < nbMasseOrd-1; i++) {
+    //  for ( int j = 0; j < nbMasseAbs-1; j++ ) {
     //    float x1 = mass[i][j].position.x;
     //    float y1 = mass[i][j].position.y;
     //    float x2 = mass[i+1][j].position.x;
@@ -235,7 +235,7 @@ class Mass {
    *
    */
   PVector calculRessortForce(int indexRowSpringAnchor, int indexColumnSpringAnchor, boolean isDiag) {
-    if ( indexRowSpringAnchor < 0 || indexRowSpringAnchor >= dimGridX || indexColumnSpringAnchor < 0 || indexColumnSpringAnchor >= dimGridY )
+    if ( indexRowSpringAnchor < 0 || indexRowSpringAnchor >= nbMasseOrd || indexColumnSpringAnchor < 0 || indexColumnSpringAnchor >= nbMasseAbs )
       return new PVector(0,0);
     
     float xMasse = position.x;
