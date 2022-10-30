@@ -99,6 +99,8 @@ void draw() {
   text(tx8, 15, 70);
   text(tx12, 15, 90);
   
+  text("Vent : [x="+(int)wind_velocity.x+", y="+(int)wind_velocity.y+", z="+(int)wind_velocity.z+"]", 15, 120); 
+  
   // marker
   fill(255, 0, 0);
   text(" < ", 80, marqueur_nb_points);
@@ -261,7 +263,6 @@ void draw() {
     float switch_z = random(0,100);
     if ( !decrease_wind ) borne = 100 - borne;
     if ( choice_more > borne ) {
-      System.out.println("wsh");
       wind_velocity.add(wind_velocity.copy().mult(ran));
     }else{
       wind_velocity.sub(wind_velocity.copy().mult(ran));
@@ -271,7 +272,6 @@ void draw() {
       decrease_wind = false;
     else if ( wind_velocity.x > 200 && !decrease_wind )
       decrease_wind = true;
-    System.out.println("New wind : "+wind_velocity);
   }
 }
 
