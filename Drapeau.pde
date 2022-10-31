@@ -243,6 +243,9 @@ void draw() {
   translate(width/2, height*1.4, 0);
   box(3000,10,3000);
   translate(-width/2, -height*1.4, 0);
+  stroke(255);
+  line(Xinit, height*1.4-6, 1500, Xinit, height*1.4-6, -1500);
+  line(1500+width/2, height*1.4-6, 0, 0+Xinit, height*1.4-6, 0);
   
   
   
