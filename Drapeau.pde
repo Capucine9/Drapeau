@@ -19,7 +19,7 @@ PeasyCam cam;
 // ======================================================================================
 
 // button text
-String tx5 = "- 5x5"; 
+String tx30 = "- 30x45"; 
 String tx8 = "- 8x12";
 String tx12 = "- 12x18";
 String txAvec = "Avec";
@@ -95,7 +95,7 @@ void setup() {
   // init the camera 
   cam = new PeasyCam(this, dimWidth/2, dimHeight/2, 0, 900);
   cam.setMinimumDistance(50);        // the power of the zoom
-  cam.setMaximumDistance(1500);      // the power of the dezoom
+  cam.setMaximumDistance(3000);      // the power of the dezoom
   cam.setYawRotationMode();          // allow rotation only on the axe y
 }
 
@@ -126,7 +126,7 @@ void draw() {
   textSize(25);
   text("Nombre de points de la discrétisation :", 15, 25); 
   textSize(20);
-  text(tx5, 15, 50);
+  text(tx30, 15, 50);
   text(tx8, 15, 70);
   text(tx12, 15, 90);
   
@@ -138,7 +138,7 @@ void draw() {
     // 5x5
     if (mouseY >= 30 && mouseY <= 50){
       fill(255,0,0);
-      text(tx5, 15, 50);
+      text(tx30, 15, 50);
     }
     // 8x12
     if (mouseY >= 50 && mouseY <= 70){
@@ -229,7 +229,7 @@ void draw() {
   // ======================================================================================
   stroke(50);
   fill(255);
-  int stake_length = 1000;
+  int stake_length = 2000;
   translate(mass[0][0].position.x+5, mass[0][0].position.y+stake_length/2, 0);
   box(10,stake_length,10);
   translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+stake_length/2), 0);
@@ -240,12 +240,12 @@ void draw() {
   // Draw ground
   // ======================================================================================
   fill(120,150,120);
-  translate(width/2, height*1.4, 0);
-  box(3000,10,3000);
-  translate(-width/2, -height*1.4, 0);
+  translate(width/2, height*1.8, 0);
+  box(5000,10,5000);
+  translate(-width/2, -height*1.8, 0);
   stroke(255);
-  line(Xinit, height*1.4-6, 1500, Xinit, height*1.4-6, -1500);
-  line(1500+width/2, height*1.4-6, 0, 0+Xinit, height*1.4-6, 0);
+  line(Xinit, height*1.8-6, 2500, Xinit, height*1.8-6, -2500);
+  line(2500+width/2, height*1.8-6, 0, 0+Xinit, height*1.8-6, 0);
   
   
   
@@ -376,9 +376,11 @@ void mousePressed() {
       // 5x5
       if (mouseY >= 30 && mouseY <= 50){
         marqueur_nb_points = 52;
-        this.nbMasseOrd = 20;
-        this.nbMasseAbs = 35;
-        l0 = 50;
+        this.nbMasseOrd = 30;
+        this.nbMasseAbs = 45;
+        k = 450;
+        c = 10;
+        l0 = 15;
         this.initGrid();
       }
       // 8x12
@@ -386,6 +388,8 @@ void mousePressed() {
         marqueur_nb_points = 72;
         this.nbMasseOrd = 8;
         this.nbMasseAbs = 12;
+        k=100;
+        c=10;
         l0 = 50;
         this.initGrid();
       }
@@ -394,6 +398,8 @@ void mousePressed() {
         marqueur_nb_points = 92;
         this.nbMasseOrd = 12;
         this.nbMasseAbs = 18;
+        k=100;
+        c=10;
         l0 = 20;
         this.initGrid();
       }

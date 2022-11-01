@@ -30,22 +30,6 @@ class Mass {
   //
   boolean canMove = true;
   
-  ////////////////////////////////////// CONSTANT
-  // air resistance constant
-  final float D = 0.4;
-  
-  //stifness coefficient
-  float k=100;
-  
-  // spring length difference
-  float delta_l;
-  
-  // damping coefficient
-  float c=10;
-  
-  
-  // time step
-  final float delta_t = 0.003;
 
 
   /**

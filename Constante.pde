@@ -17,6 +17,27 @@ float masse = 1;
 
 
 
+////////////////////////////////////// CONSTANT
+// air resistance constant
+final float D = 0.4;
+
+//stifness coefficient
+float k=100;
+
+// spring length difference
+float delta_l;
+
+// damping coefficient
+float c=10;
+
+
+// time step (must be between 0.001 and 0.005 for the smallest flag, 0.001 for the bigger. Else bugged simulation)
+final float delta_t = 0.001;
+  
+  
+
+
+
 //
 float change_wind_proba = 0.992;
 //
