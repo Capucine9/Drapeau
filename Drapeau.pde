@@ -113,6 +113,12 @@ void draw() {
   // color of the background of the window
   background(20,20,100);
   
+  // apply lights for texture
+  directionalLight(255, 255, 255, 0, 0, -1);
+  directionalLight(150, 150, 150, 0, 1, 1);
+  lightFalloff(1, 0, 0);
+  lightSpecular(0, 0, 0);
+  
   
   // ================================================================================================================================================================
   // IHM declaration (no affected by rotation)
