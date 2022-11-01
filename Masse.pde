@@ -1,227 +1,118 @@
 /**
- * Class which represent a flag 
+ * Class which a mass, a part of the flag
+ *
+ * @author Hubert C. / Charron M.
  **/
 class Mass {
   
-  int i = -1;
-  int j = -1;
+  
+  // the coordinates of the mass in the array of mass (but also in the flag)
+  int i = -1;    // line coordinate
+  int j = -1;    // column coordinate
+  
   
   // the position of the mass in the world
   PVector position;
   
-  // the initial velocity of the mass
-  //PVector velocity0;
   
-  // the velocity of the mass at the time t;
+  // the velocity of the mass at the actual time (at the actual frame of the window)
   PVector velocity = new PVector (0, 0, 0);
   
-  // the acceleration of the mass at the time t;
+  // the acceleration of the mass at the actual time (at the actual frame of the window)
   PVector acceleration;
   
-  //
+  // the sum of force recieved by being the anchor of a spring for multiple mass
+  // allow to apply the third law of newton
   PVector forceExterieure = new PVector(0,0, 0);
   
   // the radius of the mass
   float radius = 2;
   
-  // the mass of the mass
-  float m;
+  // the mass/weight of the mass
+  float m = masse;
   
-  //
+  // boolean to know if the mass is fixed on its position (like fix on a post)
   boolean canMove = true;
   
 
 
   /**
-   * Constructor of the object
+   * Constructor of the object. The mobility of the mass is requiered and must never change.
    **/
-  Mass(int i, int j, float x, float y, float masse, int longueur_a_vide, boolean _canMove) {
+  Mass(int i, int j, float x, float y, int longueur_a_vide, boolean _canMove) {
     this.i = i;
     this.j = j;
     position = new PVector(x, y, 0);
-    // init an random initial velocity
-    //velocity0 = new PVector(0, 0);
-    //velocity = new PVector(velocity0.x, velocity0.y);
-    //velocity = new PVector(velocity.x, velocity.y);
-    m = masse;
     l0 = longueur_a_vide;
     this.canMove = _canMove;
   }
 
 
-  /**
-   * Update the attribute of the mass, its position thanks to the calculation of the velocity and acceleration at time t.
-  **/ 
-  //void updateOld() {
-  //  // calculate forces
-  //  PVector air = new PVector (velocity.x * -D , velocity.y * -D);
-  //  PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
-    
-  //  delta_l = position.y - Yinit - l0;
-  //  PVector stifness = new PVector (0, -k * delta_l);
-  //  PVector damping = new PVector (0 , -c * velocity.y);
-    
-  //  // sum of forces
-  //  //PVector sum = air.copy();
-  //  sum = new PVector (0,0);
-  //  //sum.add(air);
-  //  //sum.add(wind);
-  //  sum.add(stifness);
-  //  //sum.add(damping);
-    
-  //  // division by mass
-  //  sum.div(m);
-    
-  //  // calculate the acceleration at the time t
-  //  //PVector tmp = new PVector(sum.x * (1 / m), sum.y * (-D / m));
-  //  acceleration = sum.add(GRAVITY); 
-    
-  //  // calculate the velocity at the time t + delta t
-  //  //PVector tmp1 = acceleration.mult(delta_t);
-  //  //velocity.add(tmp1);
-  //  acceleration.mult(delta_t);
-  //  velocity.add(acceleration);
-    
-  //  // calculate the position at the time t + delta t
-  //  PVector tmp2 = velocity.mult(delta_t);
-  //  position.add(tmp2);
-  //  System.out.println("position.y "+ position.y);
-  //  System.out.println("-------------------------");
 
-    
-  //  //position.add(velocity);
-    
-  //  //t += 0.005;
-  //}
   
-  void update() {
-    
-    // vecteur vertical
-    //float d_l = (position.y - Yinit) - l0;
-    //PVector stifness = new PVector (0, -k * d_l);
-    //PVector damping = new PVector (0 , -c * velocity.y);
-    //PVector somme = new PVector (0,0);
-    //somme.add(stifness);
-    //somme.add(damping);
-    //somme.div(m);
-    //somme.add(GRAVITY); 
-    //somme.mult(delta_t);
-    //velocity.add(somme);
-    ////velocity.mult(delta_t);
-    //position.add(velocity);
-    
-    
-    
-    //// vecteur aleatoire
-    //float d_l = (position.y - Yinit) - l0;
-    //float x1 = position.x;
-    //float y1 = position.y;
-    //float x2 = Xinit;
-    //float y2 = Yinit;
-    //// distance (pour normalisation) : dist(x1, y1, x2, y2)
-    //float distance = dist(x1, y1, x2, y2);
-    ////norme en x
-    //float Nx = (x1 - x2)/distance;
-    ////norme en y
-    //float Ny = (y1 - y2)/distance;
-    
-    //PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
-    //PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
-    //PVector somme = new PVector (0,0);
-    //somme.add(stifness);
-    //somme.add(damping);
-    //somme.div(m);
-    //somme.add(GRAVITY); 
-    //somme.mult(delta_t);
-    //velocity.add(somme);
-    //position.add(velocity);
-    
-    
-    //// vecteur aleatoire + ajout frottement
-    //// calculate forces
-    //PVector air = new PVector (velocity.x * -D , velocity.y * -D);
-    //PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D);
-    
-    //float d_l = (position.y - Yinit) - l0;
-    //float x1 = position.x;
-    //float y1 = position.y;
-    //float x2 = Xinit;
-    //float y2 = Yinit;
-    //// distance (pour normalisation) : dist(x1, y1, x2, y2)
-    //float distance = dist(x1, y1, x2, y2);
-    ////norme en x
-    //float Nx = (x1 - x2)/distance;
-    ////norme en y
-    //float Ny = (y1 - y2)/distance;
-    
-    //PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny);
-    //PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny);
-    
-    
-    
-    //// flag aspect
-    //for ( int i = 0; i < nbMasseOrd-1; i++) {
-    //  for ( int j = 0; j < nbMasseAbs-1; j++ ) {
-    //    float x1 = mass[i][j].position.x;
-    //    float y1 = mass[i][j].position.y;
-    //    float x2 = mass[i+1][j].position.x;
-    //    float y2 = mass[i+1][j].position.y;
-    //    float x3 = mass[i+1][j+1].position.x;
-    //    float y3 = mass[i+1][j+1].position.y;
-    //    float x4 = mass[i][j+1].position.x;
-    //    float y4 = mass[i][j+1].position.y;
-    //    fill(150,0,127);
-    //    stroke(255);
-    //    quad(x1, y1, x2, y2, x3, y3, x4, y4);
-    //  }
-    //} 
-    
-    
-    
-    
+  /**
+   * Function to update the position and velocity of the mass, according to position of other mass, wind, stifness ...
+   * A mass is attracted by four spring :
+   *  - on his right
+   *  - up
+   *  - upper left
+   *  - upper right
+   * The four force are computed (if diagonal enabled) and then, the wind, air resistance and gravity are apply.
+   **/
+  void update() {  
 
     PVector forceLeft =       calculRessortForce(i, j-1, false);
     PVector forceUp =         calculRessortForce(i-1, j, false);
     // diagonal spring
     PVector forceDiagLeft = new PVector(0,0,0);
     PVector forceDiagRight = new PVector(0,0,0);
+    // if diagonal spring are enable, compute force, else, they are null
     if (diagonal_spring ){
       forceDiagLeft =   calculRessortForce(i-1, j-1, true);
       forceDiagRight =  calculRessortForce(i-1, j+1, true);
     }
+    
     //sum of forces
     PVector air = new PVector (velocity.x * -D , velocity.y * -D, velocity.z * -D);
     PVector wind = new PVector (wind_velocity.x * D , wind_velocity.y * D, wind_velocity.z * D);
     PVector somme = air.copy();
     somme.add(air);
     somme.add(wind);
-  
-  
-    //PVector somme = new PVector (0,0);
+    
+    // add spring force
     somme.add(forceLeft);
     somme.add(forceUp);
     somme.add(forceDiagLeft);
     somme.add(forceDiagRight);
     somme.add(forceExterieure);
-    forceExterieure = new PVector(0,0);
     somme.div(m);
     somme.add(GRAVITY); 
     somme.mult(delta_t);
+    // apply modification of velocity and position only if the mass can move
     if ( this.canMove ) {
       velocity.add(somme);
       position.add(velocity);
     }
     
+    // reset external force, beacause this force is independent of time
+    forceExterieure = new PVector(0,0);
+    
   }
 
 
+
+
+
   /**
-   *
+   * Function that computed and return the force apply to the mass, according to the spring anchored at the position of the mass specified by its
+   * flag coordinates. The parameter isDiag must be true if the anchor is in diagonal of the mass (important for the difference of spring length)
    */
   PVector calculRessortForce(int indexRowSpringAnchor, int indexColumnSpringAnchor, boolean isDiag) {
+    // if coordinates are out of bounds, then the spring doesn't exist
     if ( indexRowSpringAnchor < 0 || indexRowSpringAnchor >= nbMasseOrd || indexColumnSpringAnchor < 0 || indexColumnSpringAnchor >= nbMasseAbs )
       return new PVector(0,0);
     
+    // position of mass and spring anchor
     float xMasse = position.x;
     float yMasse = position.y;
     float zMasse = position.z;
@@ -229,28 +120,33 @@ class Mass {
     float yAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.y;
     float zAnchorSpring = mass[indexRowSpringAnchor][indexColumnSpringAnchor].position.z;
     
+    // difference of position
     float d_l_v = ((xMasse - xAnchorSpring)) * ((xMasse - xAnchorSpring));
     float d_l_h = ((yMasse - yAnchorSpring)) * ((yMasse - yAnchorSpring));
     float d_l_p = ((zMasse - zAnchorSpring)) * ((zMasse - zAnchorSpring));
+    
     float d_l;
+    // calculated the difference of distance (according if the spring is in diagonal)
     if ( isDiag )
       d_l = sqrt(d_l_v + d_l_h + d_l_p) - (l0*sqrt(2));      
     else
       d_l = sqrt(d_l_v + d_l_h + d_l_p) - l0;
     
-    // distance (pour normalisation) : dist(x1, y1, x2, y2)
+    // distance (for normalized)
     float distance = dist(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
-    //norme en x
+    //norm for each axis
     float Nx = (xMasse - xAnchorSpring)/distance;
-    //norme en y
     float Ny = (yMasse - yAnchorSpring)/distance;
     float Nz = (zMasse - zAnchorSpring)/distance;
-    
+ 
     PVector stifness = new PVector (-k * d_l * Nx, -k * d_l * Ny, -k * d_l * Nz);
     PVector damping = new PVector (-c * velocity.x * Nx , -c * velocity.y * Ny, -c * velocity.z * Nz);
     
+    // if texture is disabled, then draw the spring like a line with a specific color. The color of the line
+    // represent the amount of force apply on this spring. The line is white and becoma more red until hte spring as
+    // his length superior at (2*lo) * sqrt(k/2)
     if ( !texture ) {
-      float ratio = 1-(d_l/l0)*sqrt(k);
+      float ratio = 1-(d_l/l0)*(sqrt(k/2));
       int green = 255;
       int blue = 255;
       if ( ratio > 0.5 ) {
@@ -263,32 +159,12 @@ class Mass {
       }
         
       stroke(255,green,blue);
-      
-      //stroke(255);
       line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);
     }
     
     PVector force = stifness.add(damping);
+    // according to the third law of newton, the force "force" apply on this mass, is also apply to the mass that are the spring anchor of this force
     mass[indexRowSpringAnchor][indexColumnSpringAnchor].forceExterieure.add(force.mult(-1));
     return force.mult(-1);
-  }
-  //255 255 255 ----- 255 255 0 ------ 255 0 0
-
- 
-  /**
-   * Display the mass and his velocity vector
-   **/
-  void display() {
-    if ( !texture ) {
-      noStroke();
-      fill(204);
-      //translate(position.x, position.y, position.z);
-      //sphere(radius*2);
-      //translate(-position.x, -position.y, -position.z);
-    }
-  
-    
-    // display the velocity of the mass
-    
   }
 }

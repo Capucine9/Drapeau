@@ -3,6 +3,8 @@ import peasy.*;
 
 /**
  * Main script of the program, script to launch with Processing
+ *
+ * @author Hubert C. / Charron M.
  */
 
 
@@ -44,6 +46,7 @@ boolean texture = false;
 // ======================================================================================
  
 // the mass thta represent a flag ([i][], i represent the line. [][j], j represent a column)
+// the position of a mass in the array of mass reflect the position of the mass in the flag
 Mass[][] mass;
 
 // coordinates of the first mass (upper left)
@@ -108,7 +111,7 @@ void setup() {
  **/
 void draw() {
   // color of the background of the window
-  background(51);
+  background(20,20,100);
   
   
   // ================================================================================================================================================================
@@ -225,7 +228,7 @@ void draw() {
   
   
   // ======================================================================================
-  // Draw stake
+  // Draw post
   // ======================================================================================
   stroke(50);
   fill(255);
@@ -239,7 +242,7 @@ void draw() {
   // ======================================================================================
   // Draw ground
   // ======================================================================================
-  fill(120,150,120);
+  fill(30,80,30);
   translate(width/2, height*1.8, 0);
   box(5000,10,5000);
   translate(-width/2, -height*1.8, 0);
@@ -250,12 +253,11 @@ void draw() {
   
   
   // ======================================================================================
-  // Update mass positions and display them
+  // Update mass positions
   // ======================================================================================
   for ( int y = nbMasseAbs-1; y >= 0; y--) {
     for ( int x = nbMasseOrd-1; x >= 0; x-- ) {
       mass[x][y].update();
-      mass[x][y].display();
     }
   }
   
@@ -309,14 +311,14 @@ void draw() {
   float choice = random(0,choice_max);
   
   // probability to change the wind
-  if ( choice > change_wind_proba*choice_max ) {
+  if ( choice > not_change_wind_proba*choice_max ) {
     float choice_more_max = 100;
     float choice_more = random(0,choice_more_max);    // probability to increase the wind (else decrease)
     float ran = random(0,factor_wind_max);            // factor of the actual wind, to add/remove to the wind
     float switch_z_max = 100;
     float switch_z = random(0,switch_z_max);          // probability to invert the Z direction of the wind
     
-    int borne =  (int) (add_wind_proba*choice_more_max);
+    int borne =  (int) (sub_wind_proba*choice_more_max);
     if ( !decrease_wind ) borne = (int) (1*choice_more_max) - borne;
     
     // increase the wind according to the radnom value
@@ -351,7 +353,7 @@ void initGrid () {
     for ( int j = 0; j < nbMasseAbs; j++ ) {
       int x = Xinit + (l0 * j);
       int y = Yinit + (l0 * i);
-      mass[i][j] = new Mass(i, j, x, y, masse, l0, true);
+      mass[i][j] = new Mass(i, j, x, y, l0, true);
     }
   }
   mass[0][0].canMove = false;
@@ -373,12 +375,12 @@ void mousePressed() {
     // Change number of discretisation points
     // ======================================================================================
     if (mouseX >= 18 && mouseX <= 70){
-      // 5x5
+      // 30-45
       if (mouseY >= 30 && mouseY <= 50){
         marqueur_nb_points = 52;
         this.nbMasseOrd = 30;
         this.nbMasseAbs = 45;
-        k = 450;
+        k = 350;
         c = 10;
         l0 = 15;
         this.initGrid();
