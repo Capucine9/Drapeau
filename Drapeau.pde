@@ -200,30 +200,30 @@ void draw() {
   // ======================================================================================
   // IHM to command the precense of texture on the flag
   // ======================================================================================
-  fill(255);
-  textSize(25);
-  text("Texture :", 550, 50); 
-  textSize(20);
-  text(txAvec, 800, 50);
-  text(txSans, 870, 50);
+  //fill(255);
+  //textSize(25);
+  //text("Texture :", 550, 50); 
+  //textSize(20);
+  //text(txAvec, 800, 50);
+  //text(txSans, 870, 50);
   
-  // Marker
-  fill(255, 0, 0);
-  text(" > ", marqueur_texture, 50);
+  //// Marker
+  //fill(255, 0, 0);
+  //text(" > ", marqueur_texture, 50);
   
-  // change the colour of the next selected value
-  if (mouseY >= 40 && mouseY <= 53){
-    // with texture
-    if (mouseX >= 795 && mouseX <= 845){
-      fill(255,0,0);
-      text(txAvec, 800, 50);
-    }
-    // without texture
-    if (mouseX >= 865 && mouseX <= 915){
-      fill(255,0,0);
-      text(txSans, 870, 50);
-    }
-  }
+  //// change the colour of the next selected value
+  //if (mouseY >= 40 && mouseY <= 53){
+  //  // with texture
+  //  if (mouseX >= 795 && mouseX <= 845){
+  //    fill(255,0,0);
+  //    text(txAvec, 800, 50);
+  //  }
+  //  // without texture
+  //  if (mouseX >= 865 && mouseX <= 915){
+  //    fill(255,0,0);
+  //    text(txSans, 870, 50);
+  //  }
+  //}
   
   
   cam.endHUD();
