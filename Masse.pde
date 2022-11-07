@@ -149,14 +149,14 @@ class Mass {
       float ratio = 1-(d_l/l0)*(sqrt(k/2));
       int green = 255;
       int blue = 255;
-      if ( ratio > 0.5 ) {
+      //if ( ratio > 0.5 ) {
         
-        green = 255;
-        blue = (int) (255 * ((ratio-0.5)/0.5));
-      }else{
-        green = (int) (255 * (ratio/0.5));
-        blue = 0;
-      }
+      //  green = 255;
+      //  blue = (int) (255 * ((ratio-0.5)/0.5));
+      //}else{
+      //  green = (int) (255 * (ratio/0.5));
+      //  blue = 0;
+      //}
         
       stroke(255,green,blue);
       line(xMasse, yMasse, zMasse, xAnchorSpring, yAnchorSpring, zAnchorSpring);

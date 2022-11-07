@@ -114,10 +114,10 @@ void draw() {
   background(20,20,100);
   
   // apply lights for texture
-  directionalLight(255, 255, 255, 0, 0, -1);
-  directionalLight(150, 150, 150, 0, 1, 1);
-  lightFalloff(1, 0, 0);
-  lightSpecular(0, 0, 0);
+  //directionalLight(255, 255, 255, 0, 0, -1);
+  //directionalLight(150, 150, 150, 0, 1, 1);
+  //lightFalloff(1, 0, 0);
+  //lightSpecular(0, 0, 0);
   
   
   // ================================================================================================================================================================
@@ -236,25 +236,25 @@ void draw() {
   // ======================================================================================
   // Draw post
   // ======================================================================================
-  stroke(50);
-  fill(255);
-  int stake_length = 2000;
-  translate(mass[0][0].position.x+5, mass[0][0].position.y+stake_length/2, 0);
-  box(10,stake_length,10);
-  translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+stake_length/2), 0);
+  //stroke(50);
+  //fill(255);
+  //int stake_length = 2000;
+  //translate(mass[0][0].position.x+5, mass[0][0].position.y+stake_length/2, 0);
+  //box(10,stake_length,10);
+  //translate(-mass[0][0].position.x+5, -(mass[0][0].position.y+stake_length/2), 0);
   
   
   
   // ======================================================================================
   // Draw ground
   // ======================================================================================
-  fill(30,80,30);
-  translate(width/2, height*1.8, 0);
-  box(5000,10,5000);
-  translate(-width/2, -height*1.8, 0);
-  stroke(255);
-  line(Xinit, height*1.8-6, 2500, Xinit, height*1.8-6, -2500);
-  line(2500+width/2, height*1.8-6, 0, 0+Xinit, height*1.8-6, 0);
+  //fill(30,80,30);
+  //translate(width/2, height*1.8, 0);
+  //box(5000,10,5000);
+  //translate(-width/2, -height*1.8, 0);
+  //stroke(255);
+  //line(Xinit, height*1.8-6, 2500, Xinit, height*1.8-6, -2500);
+  //line(2500+width/2, height*1.8-6, 0, 0+Xinit, height*1.8-6, 0);
   
   
   
